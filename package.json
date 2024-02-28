@@ -2,15 +2,19 @@
   "name": "battleship_version_2",
   "version": "1.0.0",
   "description": "Become the next Kingpin of Rotterdamm",
-   "private": true,
+  "private": true,
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "build": "webpack"
+
   },
   "keywords": [],
   "author": "Boris Nielsen",
   "license": "ISC",
   "devDependencies": {
+    "@babel/core": "^7.24.0",
+    "@babel/preset-env": "^7.24.0",
+    "babel-jest": "^29.7.0",
     "webpack": "^5.90.3",
     "webpack-cli": "^5.1.4"
   }

@@ -12,13 +12,11 @@ export default class Ship {
 
   pos(array, direction) {
     this.direction = direction;
-    let msg = document.getElementById("msg");
     if (this.direction === "h") {
       for (let i = 0; i < this.size; i++) {
         if (array[1] + i > 9) {
           this.position = [];
-          msg.textContent = "Invalid position, try again please!";
-          console.log("BOOOM");
+          console.log("Invalid position, try again please!");
           return false;
         }
         this.position.push([array[0], array[1] + i]);
@@ -28,8 +26,7 @@ export default class Ship {
       for (let i = 0; i < this.size; i++) {
         if (array[0] + i > 9) {
           this.position = [];
-          msg.textContent = "Invalid position, try again please!";
-          console.log("BOOOM");
+          console.log("Invalid position, try again please!");
           return false;
         }
         this.position.push([array[0] + i, array[1]]);
