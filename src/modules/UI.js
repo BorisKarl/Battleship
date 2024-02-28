@@ -1,20 +1,22 @@
 import { GameBoard } from "./Gameboard.js";
 
-function displayBoard(id, classname) {
-  const gameBoard = new GameBoard();
-  const div = document.getElementById(id);
-  const array = gameBoard.buildBoard();
-  array.forEach((e) => {
+function displayBoard(id) {
+    const content = document.getElementById("content");
+    const board_one = document.createElement("div");
+    board_one.setAttribute("id", id);
+    const gameBoard = new GameBoard();
+    const array = gameBoard.buildBoard();
+    array.forEach((e) => {
     let element = document.createElement("div");
-    // element.setAttribute("id", classname + e);
     element.setAttribute("id", e);
-    element.className = classname;
-    // element.innerHTML = `<img src="../src/imgs/container.png"/>`;
+    element.className = id;
     element.addEventListener("mouseover", (e) => {
       console.log(e.target.id);
     });
-    div.appendChild(element);
+    board_one.appendChild(element);
   });
+  content.appendChild(board_one);
+  console.log("display board");
 }
 
 const showPosition = (ship) => {
