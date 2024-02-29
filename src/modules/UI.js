@@ -16,7 +16,7 @@ function displayBoard(id) {
     board_one.appendChild(element);
   });
   content.appendChild(board_one);
-  console.log("display board");
+  console.log(`Building board ${id}`);
 }
 
 const showPosition = (ship) => {
