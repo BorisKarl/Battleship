@@ -33,11 +33,7 @@ const displayPlayerName = (name) => {
 }
 
 function displayBoard(id) {
-    const player_h2 = document.createElement("h2");
-    player_h2.textContent = id;
     const content = document.getElementById("content");
-    const wrapper = document.createElement("span");
-    wrapper.style.backgroundColor ="red";
     const board_one = document.createElement("div");
     board_one.setAttribute("id", id);
     const gameBoard = new GameBoard();
@@ -45,14 +41,12 @@ function displayBoard(id) {
     array.forEach((e) => {
         let element = document.createElement("div");
         element.setAttribute("id", e);
-        element.className = id;
+        element.className = "dropzone";
         element.addEventListener("mouseover", (e) => {
         console.log(e.target.id);
     });
         board_one.appendChild(element);
   });
-  wrapper.insertBefore(player_h2, wrapper.firstChild);
-  content.appendChild(wrapper);
   content.appendChild(board_one);
   console.log(`${id} ready!`);
 }
@@ -135,8 +129,169 @@ const switchBlocks = () => {
   });
 }
 
+const drag = (id, playersBoard) => {
+  const msg = document.createElement("p");
+  const h1 = document.querySelector("h1");
+  h1.appendChild(msg);
+  const target = document.getElementById(id);
+  const cocaineDiv = document.getElementById("cocaine");
+  const methDiv = document.getElementById("crack");
+  const shroomsDiv = document.getElementById("meth");
+  const mary_janeDiv = document.getElementById("weed");
+  const mary_jane2Div = document.getElementById("shrooms");
+  const dropzones = document.querySelectorAll(".dropzone");
+  cocaineDiv.setAttribute("draggable", true); 
+  methDiv.setAttribute("draggable", true); 
+  shroomsDiv.setAttribute("draggable", true); 
+  mary_janeDiv.setAttribute("draggable", true); 
+  mary_jane2Div.setAttribute("draggable", true); 
+
+  cocaineDiv.addEventListener("dragstart", (ev) => {
+    msg.textContent = "";
+    ev.dataTransfer.clearData();
+    ev.dataTransfer.setData("text/plain", ev.target.id);
+  });
+
+  methDiv.addEventListener("dragstart", (ev) => {
+    msg.textContent = "";
+    ev.dataTransfer.clearData();
+    ev.dataTransfer.setData("text/plain", ev.target.id);
+  });
+
+  shroomsDiv.addEventListener("dragstart", (ev) => {
+    msg.textContent = "";
+    ev.dataTransfer.clearData();
+    ev.dataTransfer.setData("text/plain", ev.target.id);
+  });
+
+  mary_janeDiv.addEventListener("dragstart", (ev) => {
+    msg.textContent = "";
+
+    ev.dataTransfer.clearData();
+    ev.dataTransfer.setData("text/plain", ev.target.id);
+  });
+
+  mary_jane2Div.addEventListener("dragstart", (ev) => {
+    msg.textContent = "";
+
+    ev.dataTransfer.clearData();
+    ev.dataTransfer.setData("text/plain", ev.target.id);
+  });
+
+  cocaineDiv.addEventListener("dragend", (ev) => {
+    ev.preventDefault();
+  });
+
+  methDiv.addEventListener("dragend", (ev) => {
+    ev.preventDefault();
+  });
+
+  shroomsDiv.addEventListener("dragend", (ev) => {
+    ev.preventDefault();
+  });
+
+  mary_janeDiv.addEventListener("dragend", (ev) => {
+    ev.preventDefault();
+  });
+
+  mary_jane2Div.addEventListener("dragend", (ev) => {
+    ev.preventDefault();
+  });
+
+  target.addEventListener("dragover", (e) => {
+    e.preventDefault();
+  });
+
+  target.addEventListener("drop", (e) => {
+    e.preventDefault();
+    const boardId = e.target.id;
+    // e.target.style.backgroundColor = "orange";
+    console.log(`ZielId ${boardId}`);
+  });
+
+  target.addEventListener("drop", (ev) => {
+    console.log("Drop");
+    ev.preventDefault();
+    // Get the data, which is the id of the source element
+    /*
+    let shipName = ev.dataTransfer.getData("text");
+    console.log("Shipname 1 : " + shipName);
+    let id = ev.target.id;
+    const shipDiv = document.getElementById(shipName);
+    const id1 = parseInt(id[0]);
+    const id2 = parseInt(id[2]);
+    let a = [];
+    a.push(id1, id2);
+    console.log("invalid " + playersBoard.invalidPosition(a));
+    if (playersBoard.invalidPosition(a)) {
+      msg.textContent = "Invalid position, try again!";
+      return;
+    }
+    if (shipName === "cocaine") {
+      if (cocaine.set) return;
+      if (!cocaine.pos(a, shipDiv.classList[0])) return;
+      cocaine.pos(a, shipDiv.classList[0]);
+      showPosition(cocaine);
+      msg.textContent = "Cocaine is hidden";
+    } else if (shipName === "meth") {
+      if (meth.set) return;
+      if (!meth.pos(a, shipDiv.classList[0])) return;
+      meth.pos(a, shipDiv.classList[0]);
+      showPosition(meth);
+      msg.textContent = "A lot of meth!";
+    } else if (shipName === "shrooms") {
+      if (shrooms.set) return;
+      if (!shrooms.pos(a, shipDiv.classList[0])) return;
+      shrooms.pos(a, shipDiv.classList[0]);
+      showPosition(shrooms);
+      msg.textContent = "Shrooms for the Hippies...";
+    } else if (shipName === "mary_jane") {
+      if (mary_jane.set) return;
+      if (!mary_jane.pos(a, shipDiv.classList[0])) return;
+      mary_jane.pos(a, shipDiv.classList[0]);
+      showPosition(mary_jane);
+      msg.textContent = "Some weed";
+    } else if (shipName === "mary_jane2") {
+      if (mary_jane2.set) return;
+      if (!mary_jane2.pos(a, shipDiv.classList[0])) return;
+      mary_jane2.pos(a, shipDiv.classList[0]);
+      showPosition(mary_jane2);
+      msg.textContent = "More weed";
+    } else return;
+
+    console.log(playersBoard);
+    console.log(shipName);
+    let result = playersBoard.allShipsSet();
+    if (result) msg.textContent = "Alright, all set!";
+    console.log(result);
+    */
+  });
+  
+
+  // W3 docs
+  dropzones.forEach((item) => {
+    item.addEventListener("dragenter", (event) => {
+      // highlight potential drop target when the draggable element enters it
+      if (event.target.classList.contains("dropzone")) {
+        event.target.classList.add("dragover");
+      }
+    });
+  });
+
+  dropzones.forEach((item) => {
+    item.addEventListener("dragleave", (event) => {
+      // reset background of potential drop target when the draggable element leaves it
+      if (event.target.classList.contains("dropzone")) {
+        event.target.classList.remove("dragover");
+      }
+    });
+  });
+
+}
+
+
 const setShipOnDiv = (coord) => {
   // Eventlistener checkt feld, bei klick wird das Schiff gesetzt
 };
 
-export { displayBoard, showPosition, clickShip, displayHeader, displayText, makePlayer, displayBlocks, switchBlocks };
+export { displayBoard, showPosition, clickShip, displayHeader, displayText, makePlayer, displayBlocks, switchBlocks, drag };

@@ -1,11 +1,12 @@
 import Ship from "./modules/Ship";
-import { displayBoard, displayHeader, displayText, makePlayer, displayBlocks, switchBlocks } from "./modules/UI";
+import { displayBoard, displayHeader, displayText, makePlayer, displayBlocks, switchBlocks, drag } from "./modules/UI";
 import GameBoard from "./modules/Gameboard";
 
 
 displayHeader();
 displayBlocks();
 switchBlocks();
+
 
 const button = document.getElementById("button");
 
@@ -24,7 +25,7 @@ button.addEventListener("click", () => {
     const weed = new Ship(2, "Weed");
     const shrooms = new Ship(2, "Shrooms");
 
-     displayText(crack.name);
+    displayText(crack.name);
     // Make new boards
     const human_board = new GameBoard("human_board");
     const machine_board = new GameBoard("machine_board");
@@ -40,6 +41,7 @@ button.addEventListener("click", () => {
 
     displayBoard("human");
     displayBoard("machine");
+    drag("human", human_board);
 });
 
 
