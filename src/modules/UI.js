@@ -81,8 +81,62 @@ const clickShip = (ship, player) => {
   });
 };
 
+const buildBlock = (string, length) => {
+  let block_content = document.createElement("div");
+  block_content.setAttribute("id", string);
+  block_content.setAttribute("class", "v");
+
+  for (let i = 0; i < length; i++ ){
+      let div = document.createElement("div");
+      div.setAttribute("class", "block");
+      block_content.appendChild(div);
+  }
+
+  return block_content;
+}
+
+const displayBlocks = () => {
+  const button = document.createElement("button");
+  button.setAttribute("id", "switch_button");
+  button.textContent = "SWITCH POSITION";
+  const content = document.getElementById("UI-content");
+  const block_wrapper = document.createElement('div');
+  block_wrapper.setAttribute("class", "block_wrapper");
+
+  const cocaine = buildBlock("cocaine", 5);
+  const meth = buildBlock("meth", 4);
+  const crack = buildBlock("crack", 3);
+  const weed = buildBlock("weed", 2);
+  const shrooms = buildBlock("shrooms", 2);
+
+  block_wrapper.appendChild(cocaine);
+  block_wrapper.appendChild(meth);
+  block_wrapper.appendChild(crack);
+  block_wrapper.appendChild(weed);
+  block_wrapper.appendChild(shrooms);
+  content.appendChild(button);
+  content.appendChild(block_wrapper);
+}
+
+
+const switchBlocks = () => {
+  const button = document.getElementById("switch_button");
+  const block = document.querySelectorAll(".v");
+  button.addEventListener("click", () => {
+    block.forEach((e) => {
+      if (e.classList.contains("v")) {
+        e.classList.remove("v");
+        e.classList.add("h");
+      } else {
+        e.classList.remove("h");
+        e.classList.add("v");
+      }
+    });
+  });
+}
+
 const setShipOnDiv = (coord) => {
   // Eventlistener checkt feld, bei klick wird das Schiff gesetzt
 };
 
-export { displayBoard, showPosition, clickShip, displayHeader, displayText, makePlayer };
+export { displayBoard, showPosition, clickShip, displayHeader, displayText, makePlayer, displayBlocks, switchBlocks };

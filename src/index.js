@@ -1,9 +1,11 @@
 import Ship from "./modules/Ship";
-import { displayBoard, displayHeader, displayText, makePlayer } from "./modules/UI";
+import { displayBoard, displayHeader, displayText, makePlayer, displayBlocks, switchBlocks } from "./modules/UI";
 import GameBoard from "./modules/Gameboard";
 
 
 displayHeader();
+displayBlocks();
+switchBlocks();
 
 const button = document.getElementById("button");
 
