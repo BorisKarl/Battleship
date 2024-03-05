@@ -28,9 +28,11 @@ const displayText = (text) => {
     body.appendChild(p);
 }
 
+// TODO
 const displayPlayerName = (name) => {
     const nameDiv = document.createElement("div");
 }
+
 
 function displayBoard(id) {
     const content = document.getElementById("content");
@@ -53,13 +55,14 @@ function displayBoard(id) {
 
 const showPosition = (ship) => {
   let position = ship.position;
+  console.log("showPosition()");
   console.log("position: " + position);
   position.forEach((e) => {
     let id = e.toString();
     console.log(id);
     let div = document.getElementById(id);
     console.log(div);
-    div.style.backgroundColor = "red";
+    div.style.backgroundColor = "green";
   });
 };
 
@@ -129,22 +132,40 @@ const switchBlocks = () => {
   });
 }
 
-const drag = (id, playersBoard) => {
+
+const shootRandom = (gameboard) => {
+  const gameBoard = new GameBoard;
+  let array = gameBoard.buildBoard();
+  let random_number = Math.floor(Math.random() * 100);
+  gameboard.receiveAttack(random_number);
+  console.log(random_number);
+}
+
+const setShipOnDiv = (coord) => {
+  // Eventlistener checkt feld, bei klick wird das Schiff gesetzt
+};
+
+export { displayBoard, showPosition, clickShip, displayHeader, displayText, makePlayer, displayBlocks, switchBlocks, shootRandom };
+
+
+/*
+
+const dragAndSet = (id, playersBoard) => {
   const msg = document.createElement("p");
   const h1 = document.querySelector("h1");
   h1.appendChild(msg);
   const target = document.getElementById(id);
   const cocaineDiv = document.getElementById("cocaine");
-  const methDiv = document.getElementById("crack");
-  const shroomsDiv = document.getElementById("meth");
-  const mary_janeDiv = document.getElementById("weed");
-  const mary_jane2Div = document.getElementById("shrooms");
+  const crackDiv = document.getElementById("crack");
+  const methDIV = document.getElementById("meth");
+  const weedDiv = document.getElementById("weed");
+  const shroomsDiv = document.getElementById("shrooms");
   const dropzones = document.querySelectorAll(".dropzone");
   cocaineDiv.setAttribute("draggable", true); 
-  methDiv.setAttribute("draggable", true); 
+  crackDiv.setAttribute("draggable", true); 
+  methDIV.setAttribute("draggable", true); 
+  weedDiv.setAttribute("draggable", true); 
   shroomsDiv.setAttribute("draggable", true); 
-  mary_janeDiv.setAttribute("draggable", true); 
-  mary_jane2Div.setAttribute("draggable", true); 
 
   cocaineDiv.addEventListener("dragstart", (ev) => {
     msg.textContent = "";
@@ -152,26 +173,26 @@ const drag = (id, playersBoard) => {
     ev.dataTransfer.setData("text/plain", ev.target.id);
   });
 
-  methDiv.addEventListener("dragstart", (ev) => {
+  crackDiv.addEventListener("dragstart", (ev) => {
     msg.textContent = "";
+    ev.dataTransfer.clearData();
+    ev.dataTransfer.setData("text/plain", ev.target.id);
+  });
+
+  methDIV.addEventListener("dragstart", (ev) => {
+    msg.textContent = "";
+    ev.dataTransfer.clearData();
+    ev.dataTransfer.setData("text/plain", ev.target.id);
+  });
+
+  weedDiv.addEventListener("dragstart", (ev) => {
+    msg.textContent = "";
+
     ev.dataTransfer.clearData();
     ev.dataTransfer.setData("text/plain", ev.target.id);
   });
 
   shroomsDiv.addEventListener("dragstart", (ev) => {
-    msg.textContent = "";
-    ev.dataTransfer.clearData();
-    ev.dataTransfer.setData("text/plain", ev.target.id);
-  });
-
-  mary_janeDiv.addEventListener("dragstart", (ev) => {
-    msg.textContent = "";
-
-    ev.dataTransfer.clearData();
-    ev.dataTransfer.setData("text/plain", ev.target.id);
-  });
-
-  mary_jane2Div.addEventListener("dragstart", (ev) => {
     msg.textContent = "";
 
     ev.dataTransfer.clearData();
@@ -182,19 +203,19 @@ const drag = (id, playersBoard) => {
     ev.preventDefault();
   });
 
-  methDiv.addEventListener("dragend", (ev) => {
+  crackDiv.addEventListener("dragend", (ev) => {
+    ev.preventDefault();
+  });
+
+  methDIV.addEventListener("dragend", (ev) => {
+    ev.preventDefault();
+  });
+
+  weedDiv.addEventListener("dragend", (ev) => {
     ev.preventDefault();
   });
 
   shroomsDiv.addEventListener("dragend", (ev) => {
-    ev.preventDefault();
-  });
-
-  mary_janeDiv.addEventListener("dragend", (ev) => {
-    ev.preventDefault();
-  });
-
-  mary_jane2Div.addEventListener("dragend", (ev) => {
     ev.preventDefault();
   });
 
@@ -264,7 +285,7 @@ const drag = (id, playersBoard) => {
     let result = playersBoard.allShipsSet();
     if (result) msg.textContent = "Alright, all set!";
     console.log(result);
-    */
+  
   });
   
 
@@ -289,9 +310,4 @@ const drag = (id, playersBoard) => {
 
 }
 
-
-const setShipOnDiv = (coord) => {
-  // Eventlistener checkt feld, bei klick wird das Schiff gesetzt
-};
-
-export { displayBoard, showPosition, clickShip, displayHeader, displayText, makePlayer, displayBlocks, switchBlocks, drag };
+ */
