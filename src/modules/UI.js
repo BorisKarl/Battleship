@@ -132,20 +132,20 @@ const switchBlocks = () => {
   });
 }
 
-
-const shootRandom = (gameboard) => {
+/*
+const shootRandom = (board) => {
   const gameBoard = new GameBoard;
   let array = gameBoard.buildBoard();
   let random_number = Math.floor(Math.random() * 100);
-  gameboard.receiveAttack(random_number);
+  board.receiveAttack(random_number);
   console.log(random_number);
 }
-
+*/
 const setShipOnDiv = (coord) => {
   // Eventlistener checkt feld, bei klick wird das Schiff gesetzt
 };
 
-export { displayBoard, showPosition, clickShip, displayHeader, displayText, makePlayer, displayBlocks, switchBlocks, shootRandom };
+export { displayBoard, showPosition, clickShip, displayHeader, displayText, makePlayer, displayBlocks, switchBlocks };
 
 
 /*

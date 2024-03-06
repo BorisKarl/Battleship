@@ -5,6 +5,7 @@ export default class GameBoard {
     this.missedAttacks = [];
     this.gameOver = false;
     this.attacks = [];
+    this.attackArray = null;
   }
 
   buildBoard() {
@@ -30,8 +31,9 @@ export default class GameBoard {
           return;
         }
       });
-      this.missedAttacks.push(coord);
+      
     });
+    this.missedAttacks.push(coord);
   }
 
   getAttacks() {
@@ -75,6 +77,25 @@ export default class GameBoard {
         return element[0] === array[0] && element[1] === array[1];
       });
     });
+  }
+
+  createRandomArray() {
+    let array = this.buildBoard();
+    let shuffled = array
+     .map((value) => ({ value, sort: Math.random() }))
+     .sort((a, b) => a.sort - b.sort)
+     .map(({ value }) => value);
+    // console.log(shuffled);
+    this.attackArray = shuffled;
+  }
+
+  shootRandom()
+    {      
+      if (this.attackArray.length <=0 ) return;
+      if (this.allShipsGone()) console.log("GAME OVER");
+      console.log(this.attackArray[0]);
+      this.receiveAttack(this.attackArray[0]);
+      this.attackArray.shift();
   }
 }
 

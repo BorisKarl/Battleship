@@ -44,14 +44,16 @@ export default class Ship {
   }
 
   hit() {
-    // TODO fill an array with hits
+    if (this.health === 0) return;
     this.health -= 1;
     this.hits += 1;
-    if (this.health === 0) {
-      this.visible = true;
-      this.sunk = true;
-      console.log(`${this.name} sunk!`);
-    }
+    console.log("Damn!");
+     if (this.health === 0) {
+       this.visible = true;
+       this.sunk = true;
+       console.log(`Your ${this.name} was discovered!`);
+       return;
+     }
   }
 
   isSunk() {

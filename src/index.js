@@ -1,11 +1,12 @@
 import Ship from "./modules/Ship";
-import { displayBoard, displayHeader, displayText, makePlayer, displayBlocks, switchBlocks, showPosition, shootRandom } from "./modules/UI";
+import { displayBoard, displayHeader, displayText, makePlayer, displayBlocks, switchBlocks, showPosition } from "./modules/UI";
 import GameBoard from "./modules/Gameboard";
 
 
 displayHeader();
 displayBlocks();
 switchBlocks();
+
 
 
 const button = document.getElementById("button");
@@ -19,7 +20,7 @@ button.addEventListener("click", () => {
 
     
     // Define "Ships" aka drugs
-    const cocaine = new Ship(5, "cocaine");
+    const cocaine = new Ship(5, "Cocaine");
     const meth = new Ship(4, "Meth");
     const crack = new Ship(3, "Crack");
     const weed = new Ship(2, "Weed");
@@ -29,6 +30,7 @@ button.addEventListener("click", () => {
     // displayText(human.name);
     // Make new boards
     const human_board = new GameBoard("human_board");
+    human_board.createRandomArray();
     const machine_board = new GameBoard("machine_board");
 
     // Set ships with array
@@ -145,7 +147,7 @@ button.addEventListener("click", () => {
 
     if (shipName === "cocaine") {
       if (cocaine.pos(a, shipDiv.classList[0])) return;
-      cocaine.pos(a, shipDiv.classList[0]);
+      // cocaine.pos(a, shipDiv.classList[0]);
       showPosition(cocaine);
       msg.textContent = "Cocaine is hidden";
       cocaineDiv.setAttribute("draggable", false);
@@ -154,28 +156,28 @@ button.addEventListener("click", () => {
     else if (shipName === "crack") {
       if (crack.set) return;
       if (crack.pos(a, shipDiv.classList[0])) return;
-      crack.pos(a, shipDiv.classList[0]);
+      // crack.pos(a, shipDiv.classList[0]);
       showPosition(crack);
       msg.textContent = "Some weed";
       crackDiv.setAttribute("draggable", false);
     } 
       else if (shipName === "meth") {
       if (meth.pos(a, shipDiv.classList[0])) return;
-      meth.pos(a, shipDiv.classList[0]);
+      // meth.pos(a, shipDiv.classList[0]);
       showPosition(meth);
       msg.textContent = "A lot of meth!";
       methDIV.setAttribute("draggable", false);
     } else if (shipName === "shrooms") {
       if (shrooms.set) return;
       if (shrooms.pos(a, shipDiv.classList[0])) return;
-      shrooms.pos(a, shipDiv.classList[0]);
+      // shrooms.pos(a, shipDiv.classList[0]);
       showPosition(shrooms);
       msg.textContent = "Shrooms for the Hippies...";
       shroomsDiv.setAttribute("draggable", false);
     } else if (shipName === "weed") {
       if (weed.set) return;
       if (weed.pos(a, shipDiv.classList[0])) return;
-      weed.pos(a, shipDiv.classList[0]);
+      // weed.pos(a, shipDiv.classList[0]);
       showPosition(weed);
       msg.textContent = "More weed";
       weedDiv.setAttribute("draggable", false);
@@ -214,9 +216,28 @@ button.addEventListener("click", () => {
     control_button.addEventListener('click', ()  =>  console.log(human_board));
     con.appendChild(control_button);
 
+    const setShip = (ship, coord) => {
+      ship.pos(coord, "v");
+      showPosition(ship);
+    }
+
+    setShip(cocaine, [0,0]);
+    setShip(crack, [0, 1]);
+    setShip(meth, [0, 2]);
+    setShip(weed, [0, 3]);
+    setShip(shrooms, [0, 4]);
+
     const attack_human = document.createElement("button");
     attack_human.textContent = "Attack Human";
-    attack_human.addEventListener("click", () => shootRandom(human_board));
+    human_board.createRandomArray();
+    attack_human.addEventListener("click", () => {
+      let n = 100;
+      while (n > 0) {
+        human_board.shootRandom();
+        n--;
+      }
+    });
+
     con.appendChild(attack_human);
     
 });
