@@ -89,14 +89,21 @@ export default class GameBoard {
     this.attackArray = shuffled;
   }
 
-  shootRandom()
+  randomShot()
     {      
       if (this.attackArray.length <=0 ) return;
-      if (this.allShipsGone()) console.log("GAME OVER");
       console.log(this.attackArray[0]);
       this.receiveAttack(this.attackArray[0]);
+      let tmp = this.attackArray[0]
+      let element = document.querySelector(`[data-id="${tmp}"`);
+      element.style.backgroundColor = "red";
       this.attackArray.shift();
   }
+
+  humanShot() {
+
+  }
+  
 }
 
 export { GameBoard };

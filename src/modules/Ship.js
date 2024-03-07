@@ -9,7 +9,7 @@ export default class Ship {
     this.direction = null;
     this.hits = 0;
   }
-
+  // Lege Position als Objekt fest mit { board: null, id: [] Wert, auf den dann irgendwie leichter zugegriffen werden kann }
   pos(array, direction) {
     this.direction = direction;
     if (this.direction === "h") {

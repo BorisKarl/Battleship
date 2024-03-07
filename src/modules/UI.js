@@ -36,31 +36,32 @@ const displayPlayerName = (name) => {
 
 function displayBoard(id) {
     const content = document.getElementById("content");
-    const board_one = document.createElement("div");
-    board_one.setAttribute("id", id);
-    const gameBoard = new GameBoard();
+    const board = document.createElement("div");
+    board.setAttribute("id", id);
+    const gameBoard = new GameBoard("human");
     const array = gameBoard.buildBoard();
     array.forEach((e) => {
         let element = document.createElement("div");
-        element.setAttribute("id", e);
+        element.setAttribute("id", id);
+        element.setAttribute("data-id", e);
         element.className = "dropzone";
         element.addEventListener("mouseover", (e) => {
-        console.log(e.target.id);
+        console.log(e.target.getAttribute("data-id"));
     });
-        board_one.appendChild(element);
+        board.appendChild(element);
   });
-  content.appendChild(board_one);
+  content.appendChild(board);
   console.log(`${id} ready!`);
 }
-
+// ship," human" oder " machine"
 const showPosition = (ship) => {
   let position = ship.position;
   console.log("showPosition()");
   console.log("position: " + position);
   position.forEach((e) => {
     let id = e.toString();
-    console.log(id);
-    let div = document.getElementById(id);
+    console.log(`ShowPosition Funktion e mit dem Wert: ${e}.`);
+    let div = document.querySelector(`[data-id="${id}"]`);
     console.log(div);
     div.style.backgroundColor = "green";
   });
@@ -132,18 +133,7 @@ const switchBlocks = () => {
   });
 }
 
-/*
-const shootRandom = (board) => {
-  const gameBoard = new GameBoard;
-  let array = gameBoard.buildBoard();
-  let random_number = Math.floor(Math.random() * 100);
-  board.receiveAttack(random_number);
-  console.log(random_number);
-}
-*/
-const setShipOnDiv = (coord) => {
-  // Eventlistener checkt feld, bei klick wird das Schiff gesetzt
-};
+
 
 export { displayBoard, showPosition, clickShip, displayHeader, displayText, makePlayer, displayBlocks, switchBlocks };
 

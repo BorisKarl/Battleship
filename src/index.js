@@ -6,14 +6,16 @@ import GameBoard from "./modules/Gameboard";
 displayHeader();
 displayBlocks();
 switchBlocks();
+let human = new GameBoard("human");
+console.log(human.buildBoard());
 
-
-
+///*
 const button = document.getElementById("button");
 
 // Start Game
 button.addEventListener("click", () => {
     let human = makePlayer("Human");
+    let machine = makePlayer("Machine");
     const header = document.getElementById("header");
     header.style.color = "green";
     button.setAttribute('disabled', true);
@@ -29,10 +31,10 @@ button.addEventListener("click", () => {
     // displayText(crack.name);
     // displayText(human.name);
     // Make new boards
-    const human_board = new GameBoard("human_board");
+    const human_board = new GameBoard("human");
     human_board.createRandomArray();
-    const machine_board = new GameBoard("machine_board");
-
+    const machine_board = new GameBoard("machine");
+    machine_board.createRandomArray();
     // Set ships with array
     const arrayOfShips = [cocaine, meth, crack, weed, shrooms];
     arrayOfShips.forEach((e) => {
@@ -139,6 +141,7 @@ button.addEventListener("click", () => {
     const id2 = parseInt(id[2]);
     let a = [];
     a.push(id1, id2);
+    console.log(a[0], a[1]);
     console.log("invalid " + human_board.invalidPosition(a));
     if (human_board.invalidPosition(a)) {
       msg.textContent = "Invalid position, try again!";
@@ -148,7 +151,7 @@ button.addEventListener("click", () => {
     if (shipName === "cocaine") {
       if (cocaine.pos(a, shipDiv.classList[0])) return;
       // cocaine.pos(a, shipDiv.classList[0]);
-      showPosition(cocaine);
+      showPosition(cocaine, human_board.name);
       msg.textContent = "Cocaine is hidden";
       cocaineDiv.setAttribute("draggable", false);
     }
@@ -157,28 +160,28 @@ button.addEventListener("click", () => {
       if (crack.set) return;
       if (crack.pos(a, shipDiv.classList[0])) return;
       // crack.pos(a, shipDiv.classList[0]);
-      showPosition(crack);
+      showPosition(crack, human_board.name);
       msg.textContent = "Some weed";
       crackDiv.setAttribute("draggable", false);
     } 
       else if (shipName === "meth") {
       if (meth.pos(a, shipDiv.classList[0])) return;
       // meth.pos(a, shipDiv.classList[0]);
-      showPosition(meth);
+      showPosition(meth, human_board.name);
       msg.textContent = "A lot of meth!";
       methDIV.setAttribute("draggable", false);
     } else if (shipName === "shrooms") {
       if (shrooms.set) return;
       if (shrooms.pos(a, shipDiv.classList[0])) return;
       // shrooms.pos(a, shipDiv.classList[0]);
-      showPosition(shrooms);
+      showPosition(shrooms, human_board.name);
       msg.textContent = "Shrooms for the Hippies...";
       shroomsDiv.setAttribute("draggable", false);
     } else if (shipName === "weed") {
       if (weed.set) return;
       if (weed.pos(a, shipDiv.classList[0])) return;
       // weed.pos(a, shipDiv.classList[0]);
-      showPosition(weed);
+      showPosition(weed, human_board.name);
       msg.textContent = "More weed";
       weedDiv.setAttribute("draggable", false);
     } else return;
@@ -222,24 +225,29 @@ button.addEventListener("click", () => {
     }
 
     setShip(cocaine, [0,0]);
-    setShip(crack, [0, 1]);
-    setShip(meth, [0, 2]);
-    setShip(weed, [0, 3]);
-    setShip(shrooms, [0, 4]);
+    setShip(crack, [0,1]);
+    setShip(meth, [0,2]);
+    setShip(weed, [0,3]);
+    setShip(shrooms, [0,4]);
 
-    const attack_human = document.createElement("button");
-    attack_human.textContent = "Attack Human";
+    const getAll = document.createElement("button");
+    getAll.textContent = "Attack Human";
     human_board.createRandomArray();
-    attack_human.addEventListener("click", () => {
+    machine_board.createRandomArray();
+
+    
+    getAll.addEventListener("click", () => {
       let n = 100;
       while (n > 0) {
-        human_board.shootRandom();
+        human_board.randomShot();
+        if (human_board.allShipsGone() === true) return;
         n--;
       }
     });
 
-    con.appendChild(attack_human);
+    con.appendChild(getAll);
     
 });
 
 
+// */
