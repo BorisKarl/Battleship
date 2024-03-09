@@ -1,5 +1,5 @@
 export default class Ship {
-  constructor(size, name) {
+  constructor(size, name, board) {
     this.name = name;
     this.size = size;
     this.position = [];
@@ -8,8 +8,8 @@ export default class Ship {
     this.sunk = false;
     this.direction = null;
     this.hits = 0;
+    this.board = board;
   }
-  // Lege Position als Objekt fest mit { board: null, id: [] Wert, auf den dann irgendwie leichter zugegriffen werden kann }
   pos(array, direction) {
     this.direction = direction;
     if (this.direction === "h") {
@@ -35,6 +35,13 @@ export default class Ship {
     }
   }
 
+  /*
+ pos(coord) {
+    this.position.push(coord);
+    this.set = true;
+  }
+  
+*/
   getPosition() {
     return this.position;
   }
@@ -48,12 +55,12 @@ export default class Ship {
     this.health -= 1;
     this.hits += 1;
     console.log("Damn!");
-     if (this.health === 0) {
-       this.visible = true;
-       this.sunk = true;
-       console.log(`Your ${this.name} was discovered!`);
-       return;
-     }
+    if (this.health === 0) {
+      this.visible = true;
+      this.sunk = true;
+      console.log(`Your ${this.name} was discovered!`);
+      return;
+    }
   }
 
   isSunk() {

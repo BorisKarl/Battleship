@@ -19,7 +19,7 @@ export default class GameBoard {
   }
 
   placeShips(ship) {
-    this.ships.push(ship);
+    if (ship.board === this.name) this.ships.push(ship);
   }
 
   receiveAttack(coord) {

@@ -42,11 +42,12 @@ function displayBoard(id) {
     const array = gameBoard.buildBoard();
     array.forEach((e) => {
         let element = document.createElement("div");
-        element.setAttribute("id", id);
+        element.setAttribute("id", e);
         element.setAttribute("data-id", e);
         element.className = "dropzone";
+        element.classList.add(id);
         element.addEventListener("mouseover", (e) => {
-        console.log(e.target.getAttribute("data-id"));
+        // console.log(e.target.getAttribute("data-id"));
     });
         board.appendChild(element);
   });
@@ -55,15 +56,22 @@ function displayBoard(id) {
 }
 // ship," human" oder " machine"
 const showPosition = (ship) => {
+  console.log(ship);
+  let selector = ship.board;
   let position = ship.position;
   console.log("showPosition()");
   console.log("position: " + position);
+  console.log(ship.board);
+  let selector_class = "." + selector;
+  let array = document.querySelectorAll(selector_class);
+  //array.forEach((e) => console.log(e));  
   position.forEach((e) => {
     let id = e.toString();
-    console.log(`ShowPosition Funktion e mit dem Wert: ${e}.`);
+    console.log(`ShowPosition(). Value e hat den Wert: ${e}.`);
     let div = document.querySelector(`[data-id="${id}"]`);
-    console.log(div);
-    div.style.backgroundColor = "green";
+    array.forEach((e) => {
+      if(e.dataset.id === id) e.style.backgroundColor = "green";
+    })
   });
 };
 
@@ -139,6 +147,10 @@ export { displayBoard, showPosition, clickShip, displayHeader, displayText, make
 
 
 /*
+ console.log(div);
+    let data = div.dataset.id;
+    console.log(div.className);
+    if ((div.className === selector_class && data === id)) div.style
 
 const dragAndSet = (id, playersBoard) => {
   const msg = document.createElement("p");
