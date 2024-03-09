@@ -9,7 +9,7 @@ switchBlocks();
 let human = new GameBoard("human");
 console.log(human.buildBoard());
 
-/*
+
 const button = document.getElementById("button");
 
 // Start Game
@@ -270,8 +270,90 @@ button.addEventListener("click", () => {
 // meth borders v 6,0/6,9 || h 0,6/9,6
 // crack border v 7,0/7,9 || h 0,7/9,7
 // weed border v 8,0/8,9  || h 0,8/9,8
-*/
-const possiblePositionsCo = (direction) => {
+
+const possibleDrugPositions = (drug, direction) => {
+  let num = 6;
+  if(drug === "cocaine") {
+    num = 6;
+  }else if (drug === "meth") {
+    num--;
+  } else if(drug === "crack") {
+    num -= 2;
+  } else {
+    num -= 3;
+  }
+  const array = [];
+  if (direction === "v") {
+    for (let i = 0; i < num; i++) {
+      for (let j = 0; j < 10; j++) {
+        array.push([i, j]);
+      }
+    }
+  } else {
+    for (let i = 0; i < 10; i++) {
+      for (let j = 0; j < num; j++) {
+        array.push([i, j]);
+      }
+    }
+  }
+  return array;
+};
+
+let hj = possibleDrugPositions("crack", "v");
+console.log(hj);
+
+
+const getRandomInt = (limit) => {
+  return Math.floor(Math.random() * limit);
+};
+
+const position = (direction, drug) => {
+  let result = [];
+  let num = getRandomInt(60);
+  if (direction === "v") {
+    let array = possibleDrugPositions(drug, "v");
+    // console.log(array);
+    let tmp = array[num][0];
+    let secondInt = array[num][1];
+    console.log("tmp : " + tmp);
+    result.push([tmp, secondInt]);
+    for (let i = 0; i < 4; i++) {
+      tmp++;
+      console.log("tmp aus dem loop 'v': " + tmp);
+      result.push([tmp, secondInt]);
+    }
+  } else if (direction === "h") {
+    let array = possibleDrugPositions(drug, "h");
+    // console.log(array);
+    let tmp = array[num][1];
+    let first_int = array[num][0];
+    console.log("tmp : " + tmp);
+    result.push([first_int, tmp]);
+    for (let i = 0; i < 4; i++) {
+      tmp++;
+      console.log("tmp aus dem loop 'h': " + tmp);
+      result.push([first_int, tmp]);
+    }
+  }
+  console.log(result);
+  return result;
+};
+
+const randDirection = () => {
+  let num = Math.floor(Math.random() * 2);
+  if (num % 2 === 0) return "v";
+  return "h";
+};
+
+console.log(randDirection());
+
+let position_cocaine = position(randDirection(), "cocaine");
+
+console.log(" position " + position_cocaine);
+
+// console.log(result_h, result_v);
+/**
+ * const possiblePositionsCocaine = (direction) => {
   const array = [];
   if (direction === "v") {
     for (let i = 0; i < 6; i++) {
@@ -288,55 +370,41 @@ const possiblePositionsCo = (direction) => {
   }
   return array;
 };
-const getRandomInt = (limit) => {
-  return Math.floor(Math.random() * limit);
-};
 
-const position = (direction) => {
-  let result = [];
-  let num = getRandomInt(60);
+const possiblePositionsCrack = (direction) => {
+  const array = [];
   if (direction === "v") {
-    let array = possiblePositionsCo("v");
-    // console.log(array);
-    let tmp = array[num][0];
-    let secondInt = array[num][1];
-    console.log("tmp : " + tmp);
-    result.push([tmp, secondInt]);
-    for (let i = 0; i < 4; i++) {
-      tmp++;
-      console.log("tmp aus dem loop 'v': " + tmp);
-      result.push([tmp, secondInt]);
+    for (let i = 0; i < 5; i++) {
+      for (let j = 0; j < 10; j++) {
+        array.push([i, j]);
+      }
     }
-  } else if (direction === "h") {
-    let array = possiblePositionsCo("h");
-    // console.log(array);
-    let tmp = array[num][1];
-    let first_int = array[num][0];
-    console.log("tmp : " + tmp);
-    result.push([first_int, tmp]);
-    for (let i = 0; i < 4; i++) {
-      tmp++;
-      console.log("tmp aus dem loop 'h': " + tmp);
-      result.push([first_int, tmp]);
+  } else {
+    for (let i = 0; i < 10; i++) {
+      for (let j = 0; j < 5; j++) {
+        array.push([i, j]);
+      }
     }
   }
-  console.log(result);
-  return result;
+  return array;
 };
 
-let result_v = possiblePositionsCo("v");
-let result_h = possiblePositionsCo("h");
-
-const randDirection = () => {
-  let num = Math.floor(Math.random() * 2);
-  if (num % 2 === 0) return "v";
-  return "h";
+const possiblePositionsMeth = (direction) => {
+  const array = [];
+  if (direction === "v") {
+    for (let i = 0; i < 4; i++) {
+      for (let j = 0; j < 10; j++) {
+        array.push([i, j]);
+      }
+    }
+  } else {
+    for (let i = 0; i < 10; i++) {
+      for (let j = 0; j < 4; j++) {
+        array.push([i, j]);
+      }
+    }
+  }
+  return array;
 };
 
-console.log(randDirection());
-
-let position_cocaine = position(randDirection());
-
-console.log(" position " + position_cocaine);
-
-// console.log(result_h, result_v);
+ */
