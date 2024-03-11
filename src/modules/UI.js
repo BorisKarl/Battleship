@@ -56,22 +56,22 @@ function displayBoard(id) {
 }
 // ship," human" oder " machine"
 const showPosition = (ship) => {
-  console.log(ship);
+  // console.log(ship);
   let selector = ship.board;
   let position = ship.position;
-  console.log("showPosition()");
-  console.log("position: " + position);
-  console.log(ship.board);
+  // console.log("showPosition()");
+  // console.log("position: " + position);
+  // console.log(ship.board);
   let selector_class = "." + selector;
   let array = document.querySelectorAll(selector_class);
-  //array.forEach((e) => console.log(e));  
+  //array.forEach((e) => console.log(e));
   position.forEach((e) => {
     let id = e.toString();
-    console.log(`ShowPosition(). Value e hat den Wert: ${e}.`);
+    // console.log(`ShowPosition(). Value e hat den Wert: ${e}.`);
     let div = document.querySelector(`[data-id="${id}"]`);
     array.forEach((e) => {
-      if(e.dataset.id === id) e.style.backgroundColor = "green";
-    })
+      if (e.dataset.id === id) e.style.backgroundColor = "green";
+    });
   });
 };
 
@@ -140,6 +140,7 @@ const switchBlocks = () => {
     });
   });
 }
+
 
 
 

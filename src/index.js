@@ -1,13 +1,33 @@
 import Ship from "./modules/Ship";
-import { displayBoard, displayHeader, displayText, makePlayer, displayBlocks, switchBlocks, showPosition } from "./modules/UI";
+
 import GameBoard from "./modules/Gameboard";
 
 
+import {
+  displayBoard,
+  displayHeader,
+  displayText,
+  makePlayer,
+  displayBlocks,
+  switchBlocks,
+  showPosition,
+} from "./modules/UI";
+
+
+import {
+  possibleDrugPositions,
+  getRandomInt,
+  randDirection,
+  randomStartingPoint,
+  randomSetShip,
+} from "./modules/Functions";
+
+
+// Show Header and Blocks for dragging
 displayHeader();
 displayBlocks();
 switchBlocks();
-let human = new GameBoard("human");
-console.log(human.buildBoard());
+
 
 
 const button = document.getElementById("button");
@@ -41,22 +61,58 @@ button.addEventListener("click", () => {
   const machine_weed = new Ship(2, "Weed", "machine");
   const machine_shrooms = new Ship(2, "Shrooms", "machine");
 
+  //
+
+  //
+
   // Set ships with array
   const arrayOfShips_human = [cocaine, meth, crack, weed, shrooms];
+  const arrayOfShips_machine = [
+    machine_cocaine,
+    machine_meth,
+    machine_crack,
+    machine_weed,
+    machine_shrooms,
+  ];
+
   arrayOfShips_human.forEach((e) => {
     human_board.placeShips(e);
   });
-   const arrayOfShips_machine = [
-     machine_cocaine, machine_meth, machine_crack, machine_weed, machine_shrooms];
-   arrayOfShips_machine.forEach((e) => {
-     machine_board.placeShips(e);
-   });
 
-  console.log(human_board, machine_board);
+  arrayOfShips_machine.forEach((e) => {
+    machine_board.placeShips(e);
+  });
+
+  // console.log(human_board, machine_board);
 
   displayBoard("human");
   displayBoard("machine");
-  // dragAndSet("human", human_board);
+
+  // Set ship on random position
+  const setShipsOnMachineBoard = (array) => {
+    let positionsArray = [];
+    array.forEach((e) => {
+      let direction = randDirection();
+      let start = randomStartingPoint(e.name, direction);
+      if(randomSetShip(e, direction, start)) {
+        console.log("success!");
+      } 
+      else{
+          console.log("Failure!");
+          return;
+      }
+                                                              
+    });
+  };
+
+  setShipsOnMachineBoard(arrayOfShips_machine);
+
+  /*
+     let testStart = randomStartingPoint("cocaine", randDirection());
+   console.log("All eyes on me: " + testStart);
+   randomSetShip(machine_cocaine, randDirection(), testStart);  
+  
+  **/
 
   // It's a drag
 
@@ -135,24 +191,24 @@ button.addEventListener("click", () => {
   target.addEventListener("drop", (e) => {
     e.preventDefault();
     const boardId = e.target.id;
-    console.log(`ZielId ${boardId}`);
+    // console.log(`ZielId ${boardId}`);
   });
 
   target.addEventListener("drop", (ev) => {
-    console.log("Drop");
+    // console.log("Drop");
     ev.preventDefault();
     // Get the data, which is the id of the source element
 
     let shipName = ev.dataTransfer.getData("text");
-    console.log("Shipname: " + shipName);
+    // console.log("Shipname: " + shipName);
     let id = ev.target.id;
     const shipDiv = document.getElementById(shipName);
     const id1 = parseInt(id[0]);
     const id2 = parseInt(id[2]);
     let a = [];
     a.push(id1, id2);
-    console.log(a[0], a[1]);
-    console.log("invalid " + human_board.invalidPosition(a));
+    // console.log(a[0], a[1]);
+    // console.log("invalid " + human_board.invalidPosition(a));
     if (human_board.invalidPosition(a)) {
       msg.textContent = "Invalid position, try again!";
       return;
@@ -193,11 +249,11 @@ button.addEventListener("click", () => {
       weedDiv.setAttribute("draggable", false);
     } else return;
 
-    console.log(human_board);
-    console.log(shipName);
+    // console.log(human_board);
+    // console.log(shipName);
     let result = human_board.allShipsSet();
     if (result) msg.textContent = "Alright, let's go!";
-    console.log(result);
+    // console.log(result);
   });
 
   // W3 docs
@@ -223,29 +279,32 @@ button.addEventListener("click", () => {
   const con = document.getElementById("UI-content");
   control_button.textContent = "Check Gameboards";
   control_button.addEventListener("click", () => {
-    console.log(human_board);
-    console.log(machine_board);
+    // console.log(human_board);
+    // console.log(machine_board);
   });
   con.appendChild(control_button);
 
-  const setShip = (ship, coord, selector) => {
+  // !!! TODO rewrite for random placement, merge with possibleDrugPositions Function !!!
+  // randDirection als drittes Argument
+  const setShip = (ship, coord) => {
     ship.pos(coord, "v");
-    showPosition(ship, selector);
+    showPosition(ship);
   };
+  // !!! !!!!
 
   // set ships for player
-  setShip(cocaine, [0,0]);
-  setShip(crack, [0,1]);
-  setShip(meth, [0,2]);
-  setShip(weed, [0,3]);
-  setShip(shrooms, [0,4]);
+  setShip(cocaine, [0, 0]);
+  setShip(crack, [0, 1]);
+  setShip(meth, [0, 2]);
+  setShip(weed, [0, 3]);
+  setShip(shrooms, [0, 4]);
 
-  // seetShip for machine
-  setShip(machine_cocaine, [0,0]);
-  setShip(machine_crack, [0, 1]);
-  setShip(machine_meth, [0, 2]);
-  setShip(machine_weed, [0, 3]);
-  setShip(machine_shrooms, [0, 4]);
+  // setShip for machine
+  // setShip(machine_cocaine, [0,0]);
+  // setShip(machine_crack, [0, 1]);
+  // setShip(machine_meth, [0, 2]);
+  // setShip(machine_weed, [0, 3]);
+  // setShip(machine_shrooms, [0, 4]);
 
   const getAll = document.createElement("button");
   getAll.textContent = "Attack Human";
@@ -271,55 +330,34 @@ button.addEventListener("click", () => {
 // crack border v 7,0/7,9 || h 0,7/9,7
 // weed border v 8,0/8,9  || h 0,8/9,8
 
-const possibleDrugPositions = (drug, direction) => {
-  let num = 6;
-  if(drug === "cocaine") {
-    num = 6;
-  }else if (drug === "meth") {
-    num--;
-  } else if(drug === "crack") {
-    num -= 2;
-  } else {
-    num -= 3;
-  }
-  const array = [];
-  if (direction === "v") {
-    for (let i = 0; i < num; i++) {
-      for (let j = 0; j < 10; j++) {
-        array.push([i, j]);
-      }
-    }
-  } else {
-    for (let i = 0; i < 10; i++) {
-      for (let j = 0; j < num; j++) {
-        array.push([i, j]);
-      }
-    }
-  }
-  return array;
-};
-
-let hj = possibleDrugPositions("crack", "v");
-console.log(hj);
 
 
-const getRandomInt = (limit) => {
-  return Math.floor(Math.random() * limit);
-};
+
+
 
 const position = (direction, drug) => {
   let result = [];
   let num = getRandomInt(60);
+  let size = 4;
+  if (drug === "cocaine") {
+    size = 4;
+  } else if (drug === "meth") {
+    size--;
+  } else if (drug === "crack") {
+    size -= 2;
+  } else {
+    size -= 3;
+  }
   if (direction === "v") {
     let array = possibleDrugPositions(drug, "v");
     // console.log(array);
     let tmp = array[num][0];
     let secondInt = array[num][1];
-    console.log("tmp : " + tmp);
+    // console.log(`position function mit tmp ${tmp} und secondInt ${secondInt} mit ${direction} und ${drug}`);
     result.push([tmp, secondInt]);
-    for (let i = 0; i < 4; i++) {
+    for (let i = 0; i < size; i++) {
       tmp++;
-      console.log("tmp aus dem loop 'v': " + tmp);
+      // console.log("tmp aus dem loop 'v': " + tmp);
       result.push([tmp, secondInt]);
     }
   } else if (direction === "h") {
@@ -327,29 +365,51 @@ const position = (direction, drug) => {
     // console.log(array);
     let tmp = array[num][1];
     let first_int = array[num][0];
-    console.log("tmp : " + tmp);
+    // console.log(
+    // `position function mit tmp ${tmp} und firstInt ${first_int} mit ${direction} und ${drug}`
+    //  );
     result.push([first_int, tmp]);
-    for (let i = 0; i < 4; i++) {
+    for (let i = 0; i < size; i++) {
       tmp++;
-      console.log("tmp aus dem loop 'h': " + tmp);
+      // console.log("tmp aus dem loop 'h': " + tmp);
       result.push([first_int, tmp]);
     }
   }
-  console.log(result);
+  // console.log(result);
   return result;
 };
 
-const randDirection = () => {
-  let num = Math.floor(Math.random() * 2);
-  if (num % 2 === 0) return "v";
-  return "h";
-};
-
-console.log(randDirection());
 
 let position_cocaine = position(randDirection(), "cocaine");
+let position_meth = position(randDirection(), "meth");
+let position_crack = position(randDirection(), "crack");
+let position_shrooms = position(randDirection(), "shrooms");
+let position_weed = position(randDirection(), "weed");
 
-console.log(" position " + position_cocaine);
+
+// console.log(" position cocaine: " + position_cocaine);
+// console.log(" position meth: " + position_meth);
+// console.log(" position crack: " + position_crack);
+// console.log(" position shrooms: " + position_shrooms);
+// console.log(" position weed: " + position_weed);
+
+
+let hj = possibleDrugPositions("crack", "v");
+// console.log(hj);
+
+let cocaine1 = possibleDrugPositions("cocaine", randDirection());
+
+// console.log(" position cocaine: " + cocaine1);
+// console.log(" position meth: " + possibleDrugPositions("meth", randDirection()));
+// console.log(
+//   " position crack: " + possibleDrugPositions("crack", randDirection()));
+// console.log(
+//   " position shrooms: " +
+//     possibleDrugPositions("shrooms", randDirection())
+// );
+// console.log(
+//   " position weed: " + possibleDrugPositions("weed", randDirection())
+// );
 
 // console.log(result_h, result_v);
 /**
