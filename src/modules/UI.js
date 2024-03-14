@@ -15,6 +15,8 @@ const displayHeader = () => {
     header.appendChild(button);
     body.insertBefore(header, body.firstChild);
 }
+const button = document.getElementById("button");
+
 
 const makePlayer = (name) => {
         const player = new Player(name);
@@ -54,20 +56,19 @@ function displayBoard(id) {
   content.appendChild(board);
   console.log(`${id} ready!`);
 }
-// ship," human" oder " machine"
 const showPosition = (ship) => {
-  // console.log(ship);
   let selector = ship.board;
   let position = ship.position;
-  // console.log("showPosition()");
-  // console.log("position: " + position);
-  // console.log(ship.board);
+  if (!position || !Array.isArray(position)) {
+    console.error("Position is undefined or not an array");
+    return;
+  }
   let selector_class = "." + selector;
   let array = document.querySelectorAll(selector_class);
-  //array.forEach((e) => console.log(e));
+  array.forEach((e) => console.log(e));
   position.forEach((e) => {
     let id = e.toString();
-    // console.log(`ShowPosition(). Value e hat den Wert: ${e}.`);
+    console.log(`ShowPosition(). Value e hat den Wert: ${e}.`);
     let div = document.querySelector(`[data-id="${id}"]`);
     array.forEach((e) => {
       if (e.dataset.id === id) e.style.backgroundColor = "green";
@@ -144,7 +145,7 @@ const switchBlocks = () => {
 
 
 
-export { displayBoard, showPosition, clickShip, displayHeader, displayText, makePlayer, displayBlocks, switchBlocks };
+export { displayBoard, showPosition, clickShip, displayHeader, displayText, makePlayer, displayBlocks, switchBlocks, button };
 
 
 /*
