@@ -12,9 +12,9 @@ export default class Ship {
   }
   pos(array, direction) {
     this.direction = direction;
-    if (this.direction === "v") {
-      for (let i = 0; i < this.size; i++) {
-        if (array[1] + i > 9) {
+    if (this.direction === "h") {
+      for (let i = 0; i < this.size ; i++) {
+        if (array[1] + this.size - 1 > 9) {
           this.position = [];
           console.log(
             `Invalid position, position ${array} with direction ${direction} and size ${this.size} try again please!`
@@ -24,9 +24,9 @@ export default class Ship {
         this.position.push([array[0], array[1] + i]);
         this.set = true;
       }
-    } else if (this.direction === "h") {
+    } else if (this.direction === "v") {
       for (let i = 0; i < this.size; i++) {
-        if (array[0] + i > 9) {
+        if (array[0] + this.size - 1 > 9) {
           this.position = [];
 console.log(
   `Invalid position, position ${array} with direction ${direction} and size ${this.size} try again please!`
