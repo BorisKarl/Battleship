@@ -57,13 +57,15 @@ console.log(
     if (this.health === 0) return;
     this.health -= 1;
     this.hits += 1;
-    console.log("Damn!");
     if (this.health === 0) {
       this.visible = true;
       this.sunk = true;
       console.log(`Your ${this.name} was discovered!`);
       return;
     }
+    console.log("Damn!");
+    return;
+    
   }
 
   isSunk() {

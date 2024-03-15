@@ -1,3 +1,6 @@
+import { doc } from "prettier";
+import { displayText } from "./UI";
+
 export default class GameBoard {
   constructor(name) {
     this.name = name;
@@ -6,8 +9,9 @@ export default class GameBoard {
     this.gameOver = false;
     this.attacks = [];
     this.attackArray = null;
+    this.cellTaken = false;
   }
-
+  // jedes Feld bekommt ein Objekt ob es besetzt oder getroffen ist.
   buildBoard() {
     let battleGround = [];
     for (let i = 0; i < 10; i++) {
@@ -23,17 +27,25 @@ export default class GameBoard {
   }
 
   receiveAttack(coord) {
+    let result = false;
     this.ships.forEach((ship) => {
       ship.position.forEach((pos) => {
         if (pos[0] === coord[0] && pos[1] === coord[1]) {
           ship.hit();
+          displayText(`${ship.name} getroffen! Jetzt eine Größe von ${ship.health} übrig!`);
           this.attacks.push(coord);
-          return;
+          result = true;
         }
+        ;
       });
       
     });
     this.missedAttacks.push(coord);
+       this.ships.every((ship) => {
+         if (ship.sunk) this.gameOver = true;
+       });
+    console.log(coord);
+    return result;
   }
 
   getAttacks() {
@@ -98,6 +110,10 @@ export default class GameBoard {
       let element = document.querySelector(`[data-id="${tmp}"`);
       element.style.backgroundColor = "red";
       this.attackArray.shift();
+      this.missedAttacks.push(coord);
+      this.ships.every((ship) => {
+        if (ship.sunk) this.gameOver = true;
+      });
   }
 
   humanShot() {

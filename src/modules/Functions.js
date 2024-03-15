@@ -38,41 +38,37 @@ const possibleDrugPositions = (drug, direction) => {
   return array;
 };
 
+const randomStartingPoint = (drug, randomDirection) => {
+  let a = possibleDrugPositions(drug, randomDirection);
+  let start = a[getRandomInt(a.length)];
+  return start;
+};
 
-  const randomStartingPoint = (drug, randomDirection) => {
-    let a = possibleDrugPositions(drug, randomDirection);
-    let start = a[getRandomInt(a.length)];
-    return start;
-  };
+const randomSetShip = (ship, direction, coord) => {
+  ship.pos(coord, direction);
+  if (ship.set) {
+    showPosition(ship);
+    return true;
+  }
+  return false;
+};
 
-  const randomSetShip = (ship, direction, coord) => {
-    ship.pos(coord, direction);
-    if(ship.set) {
-      showPosition(ship);
+function isArrayInArray(source, search) {
+  var searchLen = search.length;
+  for (var i = 0, len = source.length; i < len; i++) {
+    // skip not same length
+    if (source[i].length != searchLen) continue;
+    // compare each element
+    for (var j = 0; j < searchLen; j++) {
+      // if a pair doesn't match skip forwards
+      if (source[i][j] !== search[j]) {
+        break;
+      }
       return true;
     }
-    return false;
-
-  };
-
-
-
-  function isArrayInArray(source, search) {
-    var searchLen = search.length;
-    for (var i = 0, len = source.length; i < len; i++) {
-      // skip not same length
-      if (source[i].length != searchLen) continue;
-      // compare each element
-      for (var j = 0; j < searchLen; j++) {
-        // if a pair doesn't match skip forwards
-        if (source[i][j] !== search[j]) {
-          break;
-        }
-        return true;
-      }
-    }
-    return false;
   }
+  return false;
+}
 
 const checkArrays = (arr1, arr2) => {
   for (let subArray of arr2) {
@@ -91,35 +87,32 @@ const checkArrays = (arr1, arr2) => {
 };
 
 const buildShipPosition = (size, array, direction) => {
-    let position = []
-    if (direction === "h") {
-      for (let i = 0; i < size ; i++) {
-        if (array[1] + size - 1 > 9) {
-          console.log(
-            `Invalid position, position ${array} with direction ${direction} and size ${size} try again please!`
-          );
-          return false;
-        }
-        position.push([array[0], array[1] + i]);
+  let position = [];
+  if (direction === "h") {
+    for (let i = 0; i < size; i++) {
+      if (array[1] + size - 1 > 9) {
+        console.log(
+          `Invalid position, position ${array} with direction ${direction} and size ${size} try again please!`,
+        );
+        return false;
       }
-    } else if (direction === "v") {
-      for (let i = 0; i < size; i++) {
-        if (array[0] + size - 1 > 9) {
-          console.log(
-            `Invalid position, position ${array} with direction ${direction} and size ${size} try again please!`
-          );
-          return false;
-        }
-        position.push([array[0] + i, array[1]]);
-      }
+      position.push([array[0], array[1] + i]);
     }
-    return position;
-}
+  } else if (direction === "v") {
+    for (let i = 0; i < size; i++) {
+      if (array[0] + size - 1 > 9) {
+        console.log(
+          `Invalid position, position ${array} with direction ${direction} and size ${size} try again please!`,
+        );
+        return false;
+      }
+      position.push([array[0] + i, array[1]]);
+    }
+  }
+  return position;
+};
 
-
-const buildPositionsForTheMachine = (ship) => {
-
-}
+const buildPositionsForTheMachine = (ship) => {};
 
 const validPosition = (pArray, shipPosition) => {
   for (let i = 0; i < pArray.length; i++) {
@@ -142,26 +135,38 @@ const validPosition = (pArray, shipPosition) => {
 };
 
 const setShipsOnMachineBoard = (array) => {
-    let pArray = [];   
-    array.forEach((e, index) => {
-      let direction = randDirection();
-      let start = randomStartingPoint(e.name, direction);
-      if (index === 0) pArray.push(buildShipPosition(e.size, start, direction));
-      if(index > 0) {
-        let tmp = buildShipPosition(e.size, start, direction);
-          while (!validPosition(pArray, tmp)) {
-              console.log("building new coordinates...");
-              direction = randDirection();
-              tmp = buildShipPosition(e.size, randomStartingPoint(e.name, direction), direction);
-              if (!validPosition(pArray, tmp)) return false;
-              
-            }          
-              pArray.push(tmp);
-  }
- })
- return pArray;
+  let pArray = [];
+  array.forEach((e, index) => {
+    let direction = randDirection();
+    let start = randomStartingPoint(e.name, direction);
+    if (index === 0) pArray.push(buildShipPosition(e.size, start, direction));
+    if (index > 0) {
+      let tmp = buildShipPosition(e.size, start, direction);
+      while (!validPosition(pArray, tmp)) {
+        console.log("building new coordinates...");
+        direction = randDirection();
+        tmp = buildShipPosition(
+          e.size,
+          randomStartingPoint(e.name, direction),
+          direction,
+        );
+        if (!validPosition(pArray, tmp)) return false;
+      }
+      pArray.push(tmp);
+    }
+  });
+  return pArray;
 };
 
-
-
-export { possibleDrugPositions, randDirection, getRandomInt, randomStartingPoint, randomSetShip, isArrayInArray, checkArrays, buildShipPosition, validPosition, setShipsOnMachineBoard };
+export {
+  possibleDrugPositions,
+  randDirection,
+  getRandomInt,
+  randomStartingPoint,
+  randomSetShip,
+  isArrayInArray,
+  checkArrays,
+  buildShipPosition,
+  validPosition,
+  setShipsOnMachineBoard,
+};

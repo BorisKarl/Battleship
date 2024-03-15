@@ -14,20 +14,6 @@ import {
 } from "./modules/UI";
 
 
-import {
-  possibleDrugPositions,
-  getRandomInt,
-  randDirection,
-  randomStartingPoint,
-  randomSetShip,
-  isArrayInArray,
-  checkArrays,
-  buildShipPosition,
-  validPosition,
-  setShipsOnMachineBoard
-} from "./modules/Functions";
-
-
 // Show Header and Blocks for dragging
 displayHeader();
 displayBlocks();

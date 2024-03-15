@@ -6,7 +6,6 @@
   "scripts": {
     "test": "jest",
     "build": "webpack"
-
   },
   "keywords": [],
   "author": "Boris Nielsen",
@@ -15,7 +14,17 @@
     "@babel/core": "^7.24.0",
     "@babel/preset-env": "^7.24.0",
     "babel-jest": "^29.7.0",
+    "eslint": "^8.57.0",
+    "prettier": "^3.2.5",
+    "prettier-eslint": "^16.3.0",
     "webpack": "^5.90.3",
     "webpack-cli": "^5.1.4"
-  }
+  },
+  "editor.defaultFormatter": "rvest.vs-code-prettier-eslint",
+  "editor.formatOnType": false,
+  "editor.formatOnPaste": true,
+  "editor.formatOnSave": true,   
+  "editor.formatOnSaveMode": "file", 
+  "files.autoSave": "onFocusChange", 
+  "vs-code-prettier-eslint.prettierLast": false
 }
