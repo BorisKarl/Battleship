@@ -32,18 +32,15 @@ export default class GameBoard {
       ship.position.forEach((pos) => {
         if (pos[0] === coord[0] && pos[1] === coord[1]) {
           ship.hit();
-          displayText(`${ship.name} getroffen! Jetzt eine Größe von ${ship.health} übrig!`);
+          displayText(
+            `${ship.name} getroffen! Jetzt eine Größe von ${ship.health} übrig!`,
+          );
           this.attacks.push(coord);
           result = true;
         }
-        ;
       });
-      
     });
     this.missedAttacks.push(coord);
-       this.ships.every((ship) => {
-         if (ship.sunk) this.gameOver = true;
-       });
     console.log(coord);
     return result;
   }
@@ -94,32 +91,33 @@ export default class GameBoard {
   createRandomArray() {
     let array = this.buildBoard();
     let shuffled = array
-     .map((value) => ({ value, sort: Math.random() }))
-     .sort((a, b) => a.sort - b.sort)
-     .map(({ value }) => value);
+      .map((value) => ({ value, sort: Math.random() }))
+      .sort((a, b) => a.sort - b.sort)
+      .map(({ value }) => value);
     // console.log(shuffled);
     this.attackArray = shuffled;
   }
 
-  randomShot()
-    {      
-      if (this.attackArray.length <=0 ) return;
-      console.log(this.attackArray[0]);
-      this.receiveAttack(this.attackArray[0]);
-      let tmp = this.attackArray[0]
-      let element = document.querySelector(`[data-id="${tmp}"`);
-      element.style.backgroundColor = "red";
-      this.attackArray.shift();
-      this.missedAttacks.push(coord);
-      this.ships.every((ship) => {
-        if (ship.sunk) this.gameOver = true;
-      });
+  randomShot() {
+    if (this.attackArray.length <= 0) return;
+    console.log(this.attackArray[0]);
+    this.receiveAttack(this.attackArray[0]);
+    let tmp = this.attackArray[0];
+    let element = document.querySelector(`[data-id="${tmp}"`);
+    element.style.backgroundColor = "red";
+    this.attackArray.shift();
+    this.missedAttacks.push(tmp);
   }
 
-  humanShot() {
-
+  checkGameOver() {
+    const checkShipsSunk = this.ships.every((ship) => ship.sunk);
+    if (checkShipsSunk) {
+      this.gameOver = true;
+      return true;
+    } else {
+      return false;
+    }
   }
-  
 }
 
 export { GameBoard };

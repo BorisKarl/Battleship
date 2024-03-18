@@ -1,6 +1,7 @@
 import { GameBoard } from "./Gameboard.js";
 import { Player } from "./Player.js";
 import { randDirection, randomStartingPoint } from "./Functions.js";
+import { doc } from "prettier";
 
 const displayHeader = () => {
   const body = document.querySelector("body");
@@ -31,19 +32,38 @@ const makePlayer = (name) => {
   return player;
 };
 
+const makeContainer = () => {
+  const flexContainer = document.createElement("div");
+  flexContainer.setAttribute("id", "flexContainer");
+  const body = document.querySelector("body");
+  flexContainer.style.display = "flex";
+  flexContainer.style.width = "100%";
+  body.appendChild(flexContainer);
+  // body.insertBefore(flexContainer, body.firstChild);
+}
+
 const displayText = (text) => {
+  const flexContainer = document.getElementById("flexContainer");
   const p = document.createElement("p");
+  const div = document.createElement("div");
   const body = document.querySelector("body");
   p.textContent = text;
   p.style.fontFamily = "Arial";
   p.style.textAlign = "center";
-  body.insertBefore(p, body.firstChild);
+  div.style.height = "100px";
+  div.style.justifyContent = "center";
+  div.style.alignItems = "center";
+  div.setAttribute("class", "textDiv");
+  flexContainer.appendChild(div);
+  div.appendChild(p);
+  body.appendChild(flexContainer);
+  // body.insertBefore(p, body.firstChild);
 };
 
 const removeText = () => {
-  const text = document.querySelectorAll("p");
-  const body = document.querySelector("body");
-  text.forEach((e) =>  body.removeChild(e));
+  const text = document.querySelectorAll(".textDiv");
+  const flexContainer = document.getElementById("flexContainer");
+  text.forEach((e) =>  flexContainer.removeChild(e));
 };
 
 // TODO
@@ -179,4 +199,5 @@ export {
   removeHeader,
   removeBlocks,
   removeText,
+  makeContainer
 };

@@ -12,6 +12,7 @@ import {
   removeHeader,
   removeBlocks,
   removeText,
+  makeContainer,
 } from "./UI";
 
 import {
@@ -27,9 +28,17 @@ import {
   setShipsOnMachineBoard,
 } from "./Functions";
 
+const reset = () => {
+  const body = document.querySelector("body");
+  body.innerHTML = "";
+}
+
 const playRound = (brett, brett2) => {
   removeHeader();
   removeBlocks();
+  brett.checkGameOver();
+  brett2.checkGameOver();
+  makeContainer();
 
   alert("Game begins, click Pablo`s stash to find some drugs!!!! ");
   const machineBoardArray = document.querySelectorAll(".machine");
@@ -53,9 +62,13 @@ const playRound = (brett, brett2) => {
       setTimeout(() => {
         brett2.randomShot();
       }, 500);
-      if(brett.gameOver) displayText(`Game Over! ${brett2.name} hat gewonnen`);
-      if (brett2.gameOver)
-         displayText(`Game Over! ${brett.name} hat gewonnen`);
+      if (brett.checkGameOver() === true) {
+        reset();
+        alert(`Game Over! ${brett2.name} hat gewonnen`);
+      } else if (brett2.checkGameOver() === true ) {
+        reset();
+        alert(`Game Over! ${brett.name} hat gewonnen`);
+      } 
     });
   });
 };
@@ -133,7 +146,7 @@ export function game() {
     }
     ship.position = array;
     ship.set = true;
-    // showPosition(ship);
+    showPosition(ship);
   };
 
   settingShip(machine_cocaine, shipPositions[0]);
@@ -317,7 +330,7 @@ export function game() {
   });
 
   const control_button = document.createElement("button");
-  const con = document.getElementById("UI-content");
+  const con = document.querySelector("body");
   control_button.textContent = "Check Gameboards";
   control_button.addEventListener("click", () => {
     console.log(human_board);
