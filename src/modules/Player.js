@@ -1,51 +1,27 @@
 export default class Player {
   constructor(name) {
     this.name = name;
-    this.points = null;
-    this.move = false;
-    this.won = false;
-    this.lost = false;
+    this.points = 0;
+    this.lost = 0;
+    this.round = 0;
   }
 
-  attack(coord) {
-    return coord;
-  }
-
-  setShip(coord) {
-    return coord;
-  }
-
-  setAlignment(string) {
-    return string;
-  }
-
-  getName() {
-    return this.name;
+  changeName(newName) {
+      this.name = newName;
   }
 
   addPoint() {
     this.points += 1;
   }
 
-  onMove() {
-    this.move = true;
+  addRound() {
+    this.round += 1;
   }
 
-  onHold() {
-    this.move = false;
+  addLostGame() {
+    this.lost += 1;
   }
 
-  getPoints() {
-    return this.points;
-  }
-
-  win() {
-    this.win = true;
-  }
-
-  lost() {
-    this.lost = true;
-  }
 }
 
 export { Player };

@@ -1,4 +1,10 @@
 import { showPosition } from "./UI";
+import { Player } from "./Player";
+
+const makePlayer = (name) => {
+  const player = new Player(name);
+  return player;
+};
 
 const getRandomInt = (limit) => {
   return Math.floor(Math.random() * limit);
@@ -159,6 +165,7 @@ const setShipsOnMachineBoard = (array) => {
 };
 
 export {
+  makePlayer,
   possibleDrugPositions,
   randDirection,
   getRandomInt,

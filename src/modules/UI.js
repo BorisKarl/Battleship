@@ -1,75 +1,66 @@
 import { GameBoard } from "./Gameboard.js";
-import { Player } from "./Player.js";
-import { randDirection, randomStartingPoint } from "./Functions.js";
+import { randDirection, randomStartingPoint, makePlayer } from "./Functions.js";
 import { doc } from "prettier";
 
+const body = document.querySelector("body");
+
 const displayHeader = () => {
-  const body = document.querySelector("body");
   const header = document.createElement("h1");
   const p = document.createElement("p");
-  const button = document.createElement("button");
   header.setAttribute("id", "header");
   header.textContent = "Drug Run";
   p.textContent =
     "Play against the biggest druglords and become the next Kingpin of Rotterdam!";
-  button.setAttribute("id", "button");
-  button.textContent = "START";
   header.appendChild(p);
-  header.appendChild(button);
   body.insertBefore(header, body.firstChild);
 };
 
 const removeHeader = () => {
-  const body = document.querySelector("body");
   const header = document.querySelector("h1");
   body.removeChild(header);
 };
 
-const button = document.getElementById("button");
-
-const makePlayer = (name) => {
-  const player = new Player(name);
-  return player;
-};
+// const button = document.getElementById("button");
 
 const makeContainer = () => {
-  const flexContainer = document.createElement("div");
-  flexContainer.setAttribute("id", "flexContainer");
-  const body = document.querySelector("body");
-  flexContainer.style.display = "flex";
-  flexContainer.style.width = "100%";
-  body.appendChild(flexContainer);
-  // body.insertBefore(flexContainer, body.firstChild);
+    const flexContainer = document.createElement("div");
+    flexContainer.setAttribute("id", "flexContainer");
+    body.appendChild(flexContainer);
 }
 
+
 const displayText = (text) => {
-  const flexContainer = document.getElementById("flexContainer");
-  const p = document.createElement("p");
-  const div = document.createElement("div");
-  const body = document.querySelector("body");
-  p.textContent = text;
-  p.style.fontFamily = "Arial";
-  p.style.textAlign = "center";
-  div.style.height = "100px";
-  div.style.justifyContent = "center";
-  div.style.alignItems = "center";
-  div.setAttribute("class", "textDiv");
-  flexContainer.appendChild(div);
-  div.appendChild(p);
-  body.appendChild(flexContainer);
-  // body.insertBefore(p, body.firstChild);
+  const textContainer = document.createElement("div");
+  textContainer.setAttribute("class", "textContainer");
+
+  const msg = document.createElement("div");
+  msg.setAttribute("class", "msg");
+  msg.innerHTML = `
+    <p class="text">${text}</p>
+    <style>
+
+    .msg {
+      display: flex;       
+      justify-content: center;
+      align-items: center;
+    }
+    
+    p {
+        font-family: Arial, Helvetica, sans-serif;
+        text-align: center;
+    }
+</style>
+  `;  
+  textContainer.appendChild(msg);
+  body.appendChild(textContainer);
 };
 
 const removeText = () => {
-  const text = document.querySelectorAll(".textDiv");
-  const flexContainer = document.getElementById("flexContainer");
-  text.forEach((e) =>  flexContainer.removeChild(e));
+  
+  const msgArray = document.querySelectorAll(".textContainer");
+  msgArray.forEach((e) => body.removeChild(e));
 };
 
-// TODO
-const displayPlayerName = (name) => {
-  const nameDiv = document.createElement("div");
-};
 const buildBlock = (string, length) => {
   let block_content = document.createElement("div");
   block_content.setAttribute("id", string);
@@ -88,7 +79,8 @@ const displayBlocks = () => {
   const button = document.createElement("button");
   button.setAttribute("id", "switch_button");
   button.textContent = "SWITCH POSITION";
-  const content = document.getElementById("UI-content");
+  const content = document.createElement("div");
+  content.setAttribute("id", "UI-content");
   const block_wrapper = document.createElement("div");
   block_wrapper.setAttribute("class", "block_wrapper");
 
@@ -105,6 +97,7 @@ const displayBlocks = () => {
   block_wrapper.appendChild(shrooms);
   content.appendChild(button);
   content.appendChild(block_wrapper);
+  body.appendChild(content);
 };
 
 const switchBlocks = () => {
@@ -130,7 +123,7 @@ const removeBlocks = () => {
 };
 
 function displayBoard(id) {
-  const content = document.getElementById("content");
+  const content = document.getElementById("flexContainer");
   const board = document.createElement("div");
   board.setAttribute("id", id);
   const gameBoard = new GameBoard("human");
@@ -147,7 +140,8 @@ function displayBoard(id) {
     board.appendChild(element);
   });
   content.appendChild(board);
-  console.log(`${id} ready!`);
+  //body.appendChild(content);
+ 
 }
 const showPosition = (ship) => {
   let selector = ship.board;
@@ -186,18 +180,75 @@ const clickShip = (ship, player) => {
   });
 };
 
+
+const checkPlayer = (player) => {
+  const checkPlayerButton = document.createElement("button");
+  checkPlayerButton.textContent = "Check Player";
+  checkPlayerButton.addEventListener("click", () => {
+    console.log(player);
+  });
+  document.body.appendChild(checkPlayerButton);
+};
+
+const makePopUp = () => {
+  const popUp = document.createElement("div");
+  popUp.innerHTML = `
+    <div id="myModal" class="modal">
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <input type="text" id="popUpInput" autofocus>
+        Input a Name!!!!
+        <button id="submitPopup">Submit</button>
+      </div>
+    </div>
+`;
+  body.appendChild(popUp);
+  const myModal = document.getElementById("myModal");
+  myModal.style.display = "block";
+};
+
+const displayName = (playerName) => {
+  const content = document.createElement("div");
+  // const content = document.getElementById("flexContainer"); machinename.innerHTML = `
+  const playername = document.createElement("div");
+  const machinename = document.createElement("div");
+  content.setAttribute("id", "playerNameContainer");
+  // content.style.display = "flex";
+  content.innerHTML = `<div class="player_name" id="playerName">${playerName.name}</div>
+  <div class="machine_name" id="machineName">MACHINE</div>`;
+  body.insertBefore(content, body.firstChild);
+};
+
+const closePopUp = () => {
+  const myModal = document.getElementById("myModal");
+  myModal.style.display = "none";
+};
+
+
 export {
   displayBoard,
   showPosition,
   clickShip,
   displayHeader,
   displayText,
-  makePlayer,
   displayBlocks,
   switchBlocks,
-  button,
   removeHeader,
   removeBlocks,
   removeText,
-  makeContainer
+  checkPlayer,
+  makePopUp,
+  closePopUp,
+  displayName,
+  makeContainer,
 };
+
+
+/**
+ * <style> #flexContainer div {
+     flex: 1 0 25%; 
+     justify-content: center;
+     
+  }
+  </style>
+ */

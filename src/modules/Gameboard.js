@@ -1,5 +1,4 @@
 import { doc } from "prettier";
-import { displayText } from "./UI";
 
 export default class GameBoard {
   constructor(name) {
@@ -32,15 +31,13 @@ export default class GameBoard {
       ship.position.forEach((pos) => {
         if (pos[0] === coord[0] && pos[1] === coord[1]) {
           ship.hit();
-          displayText(
-            `${ship.name} getroffen! Jetzt eine Größe von ${ship.health} übrig!`,
-          );
           this.attacks.push(coord);
           result = true;
         }
       });
+      
     });
-    this.missedAttacks.push(coord);
+    if (!result) this.missedAttacks.push(coord);
     console.log(coord);
     return result;
   }
@@ -106,7 +103,7 @@ export default class GameBoard {
     let element = document.querySelector(`[data-id="${tmp}"`);
     element.style.backgroundColor = "red";
     this.attackArray.shift();
-    this.missedAttacks.push(tmp);
+    //this.missedAttacks.push(tmp);
   }
 
   checkGameOver() {
