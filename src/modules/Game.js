@@ -7,15 +7,16 @@ import {
   displayText,
   displayBlocks,
   switchBlocks,
+  displayName,
   showPosition,
   removeHeader,
   removeBlocks,
   removeText,
   checkPlayer,
   makePopUp,
-  closePopUp,
-  displayName,
   makeContainer,
+  clickPopUp,
+  enterPopUp,
 } from "./UI";
 
 import {
@@ -23,12 +24,10 @@ import {
   randDirection,
   randomStartingPoint,
   setShipsOnMachineBoard,
+  reset,
 } from "./Functions";
 
-const reset = () => {
-  const body = document.querySelector("body");
-  body.innerHTML = "";
-};
+
 
 const playRound = (machine_board, human_board, player, machine) => {
   removeHeader();
@@ -115,8 +114,6 @@ export function game() {
   header.style.color = "green";
   checkPlayer(player);
 
-  // displayText(crack.name);
-  // displayText(human.name);
   // Make new boards
   const human_board = new GameBoard("human");
   human_board.createRandomArray();
@@ -153,8 +150,6 @@ export function game() {
   arrayOfShips_machine.forEach((e) => {
     machine_board.placeShips(e);
   });
-
-  console.log(human_board, machine_board);
 
   // Set ships on random position
   const shipPositions = setShipsOnMachineBoard(arrayOfShips_machine);
@@ -305,6 +300,8 @@ export function game() {
       weedDiv.setAttribute("draggable", false);
     } else return;
 
+    // Auto set ship
+    /*
     const setShip = (ship, coord) => {
       ship.pos(coord, "v");
       showPosition(ship);
@@ -314,18 +311,26 @@ export function game() {
     setShip(meth, [0, 2]);
     setShip(weed, [0, 3]);
     setShip(shrooms, [0, 4]);
-    let result = human_board.allShipsSet();
-    if (result) {
-      if (player.round === 0) {
-        makePopUp();
-        const popUpButton = document.getElementById("submitPopup");
+
+    const popUpButton = document.getElementById("submitPopup");
         popUpButton.addEventListener("click", () => {
           let popUpValue = document.getElementById("popUpInput").value;
           player.changeName(popUpValue);
           closePopUp();
           displayName(player);
         });
+
+    */
+    let result = human_board.allShipsSet();
+    if (result) {
+      if (player.round === 0) {
+        makePopUp();
+        clickPopUp(player);
+        enterPopUp(player);
+      }else {
+        displayName(player)
       }
+
       msg.textContent = "Alright, let's go!";
       playRound(machine_board, human_board, player, machine);
     }

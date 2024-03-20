@@ -9,6 +9,7 @@ const makePlayer = (name) => {
 const getRandomInt = (limit) => {
   return Math.floor(Math.random() * limit);
 };
+
 const randDirection = () => {
   let num = Math.floor(Math.random() * 2);
   if (num % 2 === 0) return "v";
@@ -50,47 +51,7 @@ const randomStartingPoint = (drug, randomDirection) => {
   return start;
 };
 
-const randomSetShip = (ship, direction, coord) => {
-  ship.pos(coord, direction);
-  if (ship.set) {
-    showPosition(ship);
-    return true;
-  }
-  return false;
-};
 
-function isArrayInArray(source, search) {
-  var searchLen = search.length;
-  for (var i = 0, len = source.length; i < len; i++) {
-    // skip not same length
-    if (source[i].length != searchLen) continue;
-    // compare each element
-    for (var j = 0; j < searchLen; j++) {
-      // if a pair doesn't match skip forwards
-      if (source[i][j] !== search[j]) {
-        break;
-      }
-      return true;
-    }
-  }
-  return false;
-}
-
-const checkArrays = (arr1, arr2) => {
-  for (let subArray of arr2) {
-    let found = true;
-    for (let pos1 of arr1) {
-      if (
-        !subArray.some((pos2) => pos1[0] === pos2[0] && pos1[1] === pos2[1])
-      ) {
-        found = false;
-        break;
-      }
-    }
-    if (found) return true;
-  }
-  return false;
-};
 
 const buildShipPosition = (size, array, direction) => {
   let position = [];
@@ -118,7 +79,6 @@ const buildShipPosition = (size, array, direction) => {
   return position;
 };
 
-const buildPositionsForTheMachine = (ship) => {};
 
 const validPosition = (pArray, shipPosition) => {
   for (let i = 0; i < pArray.length; i++) {
@@ -164,16 +124,17 @@ const setShipsOnMachineBoard = (array) => {
   return pArray;
 };
 
+const reset = () => {
+  const body = document.querySelector("body");
+  body.innerHTML = "";
+};
+
+
+
 export {
   makePlayer,
-  possibleDrugPositions,
   randDirection,
-  getRandomInt,
   randomStartingPoint,
-  randomSetShip,
-  isArrayInArray,
-  checkArrays,
-  buildShipPosition,
-  validPosition,
   setShipsOnMachineBoard,
+  reset,
 };

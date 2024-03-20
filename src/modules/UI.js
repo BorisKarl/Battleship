@@ -193,36 +193,53 @@ const checkPlayer = (player) => {
 const makePopUp = () => {
   const popUp = document.createElement("div");
   popUp.innerHTML = `
-    <div id="myModal" class="modal">
+    <div id="popUp" class="modal">
       <div class="modal-content">
         <span class="close">&times;</span>
         <input type="text" id="popUpInput" autofocus>
-        Input a Name!!!!
+        Let's go! Input your name!
         <button id="submitPopup">Submit</button>
       </div>
     </div>
 `;
   body.appendChild(popUp);
-  const myModal = document.getElementById("myModal");
-  myModal.style.display = "block";
+ const pop = document.getElementById("popUp");
+  pop.style.display = "block";
 };
 
 const displayName = (playerName) => {
   const content = document.createElement("div");
-  // const content = document.getElementById("flexContainer"); machinename.innerHTML = `
-  const playername = document.createElement("div");
-  const machinename = document.createElement("div");
   content.setAttribute("id", "playerNameContainer");
-  // content.style.display = "flex";
   content.innerHTML = `<div class="player_name" id="playerName">${playerName.name}</div>
   <div class="machine_name" id="machineName">MACHINE</div>`;
   body.insertBefore(content, body.firstChild);
 };
 
 const closePopUp = () => {
-  const myModal = document.getElementById("myModal");
-  myModal.style.display = "none";
+  const popUp = document.getElementById("popUp");
+  popUp.style.display = "none";
 };
+
+const clickPopUp = (player) => {
+  const popUpButton = document.getElementById("submitPopup");
+  popUpButton.addEventListener("click", () => {
+    let popUpValue = document.getElementById("popUpInput").value;
+    player.changeName(popUpValue);
+    closePopUp();
+    displayName(player);
+  });
+};
+
+const enterPopUp = (player) => {
+  const input = document.getElementById("popUpInput");
+  input.addEventListener("keypress", (e) => {
+    if (e.key === "Enter") {
+      player.changeName(input.value);
+      closePopUp();
+      displayName(player);
+    }
+  });
+}; 
 
 
 export {
@@ -241,14 +258,6 @@ export {
   closePopUp,
   displayName,
   makeContainer,
+  clickPopUp,
+  enterPopUp
 };
-
-
-/**
- * <style> #flexContainer div {
-     flex: 1 0 25%; 
-     justify-content: center;
-     
-  }
-  </style>
- */
