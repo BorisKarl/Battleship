@@ -35,7 +35,6 @@ export default class GameBoard {
           result = true;
         }
       });
-      
     });
     if (!result) this.missedAttacks.push(coord);
     console.log(coord);
@@ -97,13 +96,16 @@ export default class GameBoard {
 
   randomShot() {
     if (this.attackArray.length <= 0) return;
-    console.log(this.attackArray[0]);
-    this.receiveAttack(this.attackArray[0]);
     let tmp = this.attackArray[0];
+    let result = this.receiveAttack(tmp);
     let element = document.querySelector(`[data-id="${tmp}"`);
-    element.style.backgroundColor = "red";
+    if (result) {
+      element.style.backgroundColor = "red";
+    } else {
+      element.style.backgroundColor = "pink";
+    }
+    element.style.opacity = ".6";
     this.attackArray.shift();
-    //this.missedAttacks.push(tmp);
   }
 
   checkGameOver() {

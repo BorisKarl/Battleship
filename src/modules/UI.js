@@ -4,7 +4,7 @@ import { doc } from "prettier";
 
 const body = document.querySelector("body");
 
-const displayHeader = () => {
+const displayHeader = (text) => {
   const header_wrapper = document.createElement("div");
   header_wrapper.setAttribute("id", "header_wrapper");
   const header = document.createElement("h1");
@@ -12,8 +12,8 @@ const displayHeader = () => {
   header.setAttribute("id", "header");
   header.textContent = "Drug Run";
   header.style.backgroundColor = "white";
-  p.textContent =
-    "Play against the biggest druglords and become the next Kingpin of Rotterdam!";
+  header.style.opacity = "0.9";
+  p.textContent = text;
   header.appendChild(p);
   header_wrapper.appendChild(header)
   body.insertBefore(header_wrapper, body.firstChild);
@@ -76,6 +76,8 @@ const buildBlock = (string, length) => {
   for (let i = 0; i < length; i++) {
     let div = document.createElement("div");
     div.setAttribute("class", "block");
+    div.style.backgroundColor = "green";
+    div.style.opacity = ".8";
     block_content.appendChild(div);
   }
 
@@ -148,13 +150,13 @@ function displayBoard(id) {
     element.addEventListener("mouseover", (e) => {
       console.log(e.target.getAttribute("data-id"));
       e.target.style.transform = "scale(1.2)";
-      e.target.style.backgroundColor = "yellow";
-      e.target.style.opacity = "0.3";
+      //e.target.style.backgroundColor = "yellow";
+      //e.target.style.opacity = "0.3";
       
     });
     element.addEventListener("mouseout", (e) => {
       e.target.style.transform = "scale(1)";
-      e.target.style.backgroundColor = "transparent";
+      //e.target.style.backgroundColor = "transparent";
     });
     
     board.appendChild(element);
@@ -270,6 +272,11 @@ const setBackground = () => {
 
 }
 
+const changeHeaderText = () => {
+  removeHeader();
+  displayHeader("Stash your drugs away, so your enemy can't find them...");
+}
+
 export {
   displayBoard,
   showPosition,
@@ -288,5 +295,6 @@ export {
   makeContainer,
   clickPopUp,
   enterPopUp,
-  setBackground
+  setBackground,
+  changeHeaderText
 };

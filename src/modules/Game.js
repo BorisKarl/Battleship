@@ -17,7 +17,8 @@ import {
   makeContainer,
   clickPopUp,
   enterPopUp,
-  setBackground
+  setBackground,
+  changeHeaderText
 } from "./UI";
 
 import {
@@ -28,14 +29,14 @@ import {
   reset,
 } from "./Functions";
 
-
+const text_1 = "Play against the biggest druglords and become the next Kingpin of Rotterdam!";
+const text_2 = "Stash your drugs away, so your enemy can't find them...";
 
 const playRound = (machine_board, human_board, player, machine) => {
   removeHeader();
   removeBlocks();
   removeText();
   makeContainer();
-  
 
   const machineBoardArray = document.querySelectorAll(".machine");
   machineBoardArray.forEach((e) => {
@@ -44,7 +45,8 @@ const playRound = (machine_board, human_board, player, machine) => {
       let array = [];
       array.push(parseInt(coord[0]), parseInt(coord[2]));
       if (machine_board.receiveAttack(array)) {
-        element.target.style.backgroundColor = "pink";
+        element.target.style.backgroundColor = "red";
+        element.target.style.opacity = ".6";
         element.target.style.pointerEvents = "none";
         displayText("Treffer!");
         machine_board.checkGameOver();
@@ -55,8 +57,8 @@ const playRound = (machine_board, human_board, player, machine) => {
       } else {
         machine_board.checkGameOver();
         human_board.checkGameOver();
-        element.target.textContent = "X";
-        element.target.style.color = "red";
+        element.target.style.backgroundColor = "pink";
+        element.target.style.opacity = ".6";
         displayText("Nada!");
         element.target.style.pointerEvents = "none";
         setTimeout(() => {
@@ -101,10 +103,12 @@ let player;
 let machine;
 export function game() {
   setBackground();
-  displayHeader();
+  displayHeader(text_1);
   displayBlocks();
   switchBlocks();
   makeContainer();
+
+    window.addEventListener("mousemove", changeHeaderText);
 
   if (typeof machine === "undefined") {
     machine = makePlayer("Machine");
@@ -276,23 +280,34 @@ export function game() {
     if (shipName === "cocaine") {
       if (cocaine.pos(a, shipDiv.classList[0])) return;
       showPosition(cocaine, human_board.name);
-      msg.textContent = "Cocaine is hidden";
+      removeHeader();
+      window.removeEventListener("mousemove", changeHeaderText);
+      displayHeader("Cocaine is hidden");
       cocaineDiv.setAttribute("draggable", false);
     } else if (shipName === "crack") {
       if (crack.set) return;
       if (crack.pos(a, shipDiv.classList[0])) return;
       showPosition(crack, human_board.name);
       msg.textContent = "Some weed";
+      removeHeader();
+      window.removeEventListener("mousemove", changeHeaderText);
+      displayHeader("Nobody gonna find that Crack!");
       crackDiv.setAttribute("draggable", false);
     } else if (shipName === "meth") {
       if (meth.pos(a, shipDiv.classList[0])) return;
       showPosition(meth, human_board.name);
       msg.textContent = "A lot of meth!";
+      removeHeader();
+      window.removeEventListener("mousemove", changeHeaderText);
+      displayHeader("That's lot of meth!");
       methDIV.setAttribute("draggable", false);
     } else if (shipName === "shrooms") {
       if (shrooms.set) return;
       if (shrooms.pos(a, shipDiv.classList[0])) return;
       showPosition(shrooms, human_board.name);
+      removeHeader();
+      window.removeEventListener("mousemove", changeHeaderText);
+      displayHeader("Some shrooms for th Hippies");
       msg.textContent = "Shrooms for the Hippies...";
       shroomsDiv.setAttribute("draggable", false);
     } else if (shipName === "weed") {
@@ -300,6 +315,9 @@ export function game() {
       if (weed.pos(a, shipDiv.classList[0])) return;
       showPosition(weed, human_board.name);
       msg.textContent = "More weed";
+      removeHeader();
+      window.removeEventListener("mousemove", changeHeaderText);
+      displayHeader("Some weed put away");
       weedDiv.setAttribute("draggable", false);
     } else return;
 
