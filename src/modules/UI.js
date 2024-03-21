@@ -5,18 +5,22 @@ import { doc } from "prettier";
 const body = document.querySelector("body");
 
 const displayHeader = () => {
+  const header_wrapper = document.createElement("div");
+  header_wrapper.setAttribute("id", "header_wrapper");
   const header = document.createElement("h1");
   const p = document.createElement("p");
   header.setAttribute("id", "header");
   header.textContent = "Drug Run";
+  header.style.backgroundColor = "white";
   p.textContent =
     "Play against the biggest druglords and become the next Kingpin of Rotterdam!";
   header.appendChild(p);
-  body.insertBefore(header, body.firstChild);
+  header_wrapper.appendChild(header)
+  body.insertBefore(header_wrapper, body.firstChild);
 };
 
 const removeHeader = () => {
-  const header = document.querySelector("h1");
+  const header = document.getElementById("header_wrapper");
   body.removeChild(header);
 };
 
@@ -46,6 +50,7 @@ const displayText = (text) => {
     }
     
     p {
+        backgroundColor: white;
         font-family: Arial, Helvetica, sans-serif;
         text-align: center;
     }
@@ -61,10 +66,12 @@ const removeText = () => {
   msgArray.forEach((e) => body.removeChild(e));
 };
 
+
 const buildBlock = (string, length) => {
   let block_content = document.createElement("div");
   block_content.setAttribute("id", string);
   block_content.setAttribute("class", "v");
+
 
   for (let i = 0; i < length; i++) {
     let div = document.createElement("div");
@@ -125,6 +132,10 @@ const removeBlocks = () => {
 function displayBoard(id) {
   const content = document.getElementById("flexContainer");
   const board = document.createElement("div");
+  const url =
+    "../src/assets/imgs/architecture-building-transport-facade-industry-colorful-722194-pxhere.com.jpg";
+  board.style.backgroundImage = `url('${url}')`;
+  board.style.backgroundSize = "cover";
   board.setAttribute("id", id);
   const gameBoard = new GameBoard("human");
   const array = gameBoard.buildBoard();
@@ -136,7 +147,16 @@ function displayBoard(id) {
     element.classList.add(id);
     element.addEventListener("mouseover", (e) => {
       console.log(e.target.getAttribute("data-id"));
+      e.target.style.transform = "scale(1.2)";
+      e.target.style.backgroundColor = "yellow";
+      e.target.style.opacity = "0.3";
+      
     });
+    element.addEventListener("mouseout", (e) => {
+      e.target.style.transform = "scale(1)";
+      e.target.style.backgroundColor = "transparent";
+    });
+    
     board.appendChild(element);
   });
   content.appendChild(board);
@@ -242,6 +262,14 @@ const enterPopUp = (player) => {
 }; 
 
 
+const setBackground = () => {
+  const url =
+    "../src/assets/imgs/texture-usa-money-business-paper-cash-1354491-pxhere.com.jpg";
+    body.style.backgroundImage = `url('${url}')`;
+    body.style.backgroundPosition = "25% 75%;";
+
+}
+
 export {
   displayBoard,
   showPosition,
@@ -259,5 +287,6 @@ export {
   displayName,
   makeContainer,
   clickPopUp,
-  enterPopUp
+  enterPopUp,
+  setBackground
 };

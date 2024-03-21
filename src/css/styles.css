@@ -7,10 +7,21 @@
     display: block;
 }
 
+#header_wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 200px;
+}
+
 #header {
     font-family: Arial, Helvetica, sans-serif;
     text-align: center;
     margin: 3%;
+    border-radius: 5px;
+    border-style: double;
+    border-color: green;
+    width: fit-content;
 }
 
 .input_wrapper {

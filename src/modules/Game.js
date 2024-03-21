@@ -17,6 +17,7 @@ import {
   makeContainer,
   clickPopUp,
   enterPopUp,
+  setBackground
 } from "./UI";
 
 import {
@@ -32,8 +33,9 @@ import {
 const playRound = (machine_board, human_board, player, machine) => {
   removeHeader();
   removeBlocks();
-  makeContainer();
   removeText();
+  makeContainer();
+  
 
   const machineBoardArray = document.querySelectorAll(".machine");
   machineBoardArray.forEach((e) => {
@@ -98,6 +100,7 @@ const playRound = (machine_board, human_board, player, machine) => {
 let player;
 let machine;
 export function game() {
+  setBackground();
   displayHeader();
   displayBlocks();
   switchBlocks();
