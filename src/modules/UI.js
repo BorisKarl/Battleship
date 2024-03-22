@@ -8,13 +8,10 @@ const displayHeader = (text) => {
   const header_wrapper = document.createElement("div");
   header_wrapper.setAttribute("id", "header_wrapper");
   const header = document.createElement("h1");
-  const p = document.createElement("p");
   header.setAttribute("id", "header");
-  header.textContent = "Drug Run";
+  header.textContent = text;
   header.style.backgroundColor = "white";
   header.style.opacity = "0.9";
-  p.textContent = text;
-  header.appendChild(p);
   header_wrapper.appendChild(header)
   body.insertBefore(header_wrapper, body.firstChild);
 };
@@ -217,9 +214,8 @@ const makePopUp = () => {
   popUp.innerHTML = `
     <div id="popUp" class="modal">
       <div class="modal-content">
-        <span class="close">&times;</span>
+        <p>Well done! Let's go! Input your name!</p>
         <input type="text" id="popUpInput" autofocus>
-        Let's go! Input your name!
         <button id="submitPopup">Submit</button>
       </div>
     </div>

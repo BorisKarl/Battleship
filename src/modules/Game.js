@@ -31,6 +31,11 @@ import {
 
 const text_1 = "Play against the biggest druglords and become the next Kingpin of Rotterdam!";
 const text_2 = "Stash your drugs away, so your enemy can't find them...";
+const text_3 = "Ohwee thats a lot of coke!"
+const text_4 = "Take that crack and hide it!";
+const text_5 = "Put the crystal away, so nobody can't see it!";
+const text_6 = "Magic mushroom, gonna hide it!";
+const text_7 = "Hide that Hokus Pokus!";
 
 const playRound = (machine_board, human_board, player, machine) => {
   removeHeader();
@@ -186,9 +191,6 @@ export function game() {
   displayBoard("machine");
 
   // It's a drag
-  const msg = document.createElement("p");
-  const h1 = document.querySelector("h1");
-  h1.appendChild(msg);
   const target = document.getElementById("human");
   const cocaineDiv = document.getElementById("cocaine");
   const crackDiv = document.getElementById("crack");
@@ -203,32 +205,36 @@ export function game() {
   shroomsDiv.setAttribute("draggable", true);
 
   cocaineDiv.addEventListener("dragstart", (ev) => {
-    msg.textContent = "";
+    removeHeader();
+    displayHeader(text_3);
     ev.dataTransfer.clearData();
     ev.dataTransfer.setData("text/plain", ev.target.id);
   });
 
   crackDiv.addEventListener("dragstart", (ev) => {
-    msg.textContent = "";
+    removeHeader();
+    displayHeader(text_4);
     ev.dataTransfer.clearData();
     ev.dataTransfer.setData("text/plain", ev.target.id);
   });
 
   methDIV.addEventListener("dragstart", (ev) => {
-    msg.textContent = "";
+    removeHeader();
+    displayHeader(text_5);
     ev.dataTransfer.clearData();
     ev.dataTransfer.setData("text/plain", ev.target.id);
   });
 
   weedDiv.addEventListener("dragstart", (ev) => {
-    msg.textContent = "";
-
+   removeHeader();
+   displayHeader(text_7);
     ev.dataTransfer.clearData();
     ev.dataTransfer.setData("text/plain", ev.target.id);
   });
 
   shroomsDiv.addEventListener("dragstart", (ev) => {
-    msg.textContent = "";
+   removeHeader();
+   displayHeader(text_6);
     ev.dataTransfer.clearData();
     ev.dataTransfer.setData("text/plain", ev.target.id);
   });
@@ -282,24 +288,22 @@ export function game() {
       showPosition(cocaine, human_board.name);
       removeHeader();
       window.removeEventListener("mousemove", changeHeaderText);
-      displayHeader("Cocaine is hidden");
+      displayHeader("Cocaine is hidden!");
       cocaineDiv.setAttribute("draggable", false);
     } else if (shipName === "crack") {
       if (crack.set) return;
       if (crack.pos(a, shipDiv.classList[0])) return;
       showPosition(crack, human_board.name);
-      msg.textContent = "Some weed";
       removeHeader();
-      window.removeEventListener("mousemove", changeHeaderText);
       displayHeader("Nobody gonna find that Crack!");
+      window.removeEventListener("mousemove", changeHeaderText);
       crackDiv.setAttribute("draggable", false);
     } else if (shipName === "meth") {
       if (meth.pos(a, shipDiv.classList[0])) return;
       showPosition(meth, human_board.name);
-      msg.textContent = "A lot of meth!";
       removeHeader();
       window.removeEventListener("mousemove", changeHeaderText);
-      displayHeader("That's lot of meth!");
+      displayHeader("Good!");
       methDIV.setAttribute("draggable", false);
     } else if (shipName === "shrooms") {
       if (shrooms.set) return;
@@ -307,17 +311,15 @@ export function game() {
       showPosition(shrooms, human_board.name);
       removeHeader();
       window.removeEventListener("mousemove", changeHeaderText);
-      displayHeader("Some shrooms for th Hippies");
-      msg.textContent = "Shrooms for the Hippies...";
+      displayHeader("Nice!");
       shroomsDiv.setAttribute("draggable", false);
     } else if (shipName === "weed") {
       if (weed.set) return;
       if (weed.pos(a, shipDiv.classList[0])) return;
       showPosition(weed, human_board.name);
-      msg.textContent = "More weed";
       removeHeader();
       window.removeEventListener("mousemove", changeHeaderText);
-      displayHeader("Some weed put away");
+      displayHeader("Perfect!");
       weedDiv.setAttribute("draggable", false);
     } else return;
 
@@ -345,15 +347,22 @@ export function game() {
     let result = human_board.allShipsSet();
     if (result) {
       if (player.round === 0) {
-        makePopUp();
-        clickPopUp(player);
-        enterPopUp(player);
+        setTimeout(() => {
+            makePopUp();
+            clickPopUp(player);
+            enterPopUp(player);
+        }, 1000);
+        
       }else {
-        displayName(player)
+        setTimeout(() => {
+          displayName(player);
+        }, 1000);
+   
       }
-
-      msg.textContent = "Alright, let's go!";
-      playRound(machine_board, human_board, player, machine);
+      setTimeout(() => {
+        playRound(machine_board, human_board, player, machine);
+      }, 1100);
+      
     }
   });
 
