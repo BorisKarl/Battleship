@@ -17,8 +17,9 @@ import {
   makeContainer,
   clickPopUp,
   enterPopUp,
-  setBackground,
-  changeHeaderText
+  changeHeaderText,
+  setBlocksToGameMode,
+  showHitsOnBlocks
 } from "./UI";
 
 import {
@@ -29,9 +30,9 @@ import {
   reset,
 } from "./Functions";
 
-const text_1 = "Play against the biggest druglords and become the next Kingpin of Rotterdam!";
+const text_1 = "Become the next Kingpin of Rotterdam!";
 const text_2 = "Stash your drugs away, so your enemy can't find them...";
-const text_3 = "Ohwee thats a lot of coke!"
+const text_3 = "Ohwee thats a lot of coke!";
 const text_4 = "Take that crack and hide it!";
 const text_5 = "Put the crystal away, so nobody can't see it!";
 const text_6 = "Magic mushroom, gonna hide it!";
@@ -39,7 +40,7 @@ const text_7 = "Hide that Hokus Pokus!";
 
 const playRound = (machine_board, human_board, player, machine) => {
   removeHeader();
-  removeBlocks();
+  setBlocksToGameMode();
   removeText();
   makeContainer();
 
@@ -53,22 +54,23 @@ const playRound = (machine_board, human_board, player, machine) => {
         element.target.style.backgroundColor = "red";
         element.target.style.opacity = ".6";
         element.target.style.pointerEvents = "none";
-        displayText("Treffer!");
+        displayText("Hit!");
         machine_board.checkGameOver();
         human_board.checkGameOver();
+        // showHitsOnBlocks(human_board.getInfo());
         setTimeout(() => {
           removeText();
-        }, 1300);
+        }, 1500);
       } else {
         machine_board.checkGameOver();
         human_board.checkGameOver();
         element.target.style.backgroundColor = "pink";
         element.target.style.opacity = ".6";
-        displayText("Nada!");
+        displayText("Nothing!");
         element.target.style.pointerEvents = "none";
         setTimeout(() => {
           removeText();
-        }, 1300);
+        }, 1500);
       }
 
       if (machine_board.checkGameOver() === true) {
@@ -98,8 +100,10 @@ const playRound = (machine_board, human_board, player, machine) => {
         }, 1000);
       } else {
         setTimeout(() => {
-          human_board.randomShot();
-        }, 500);
+          let test = human_board.randomShot();
+          console.log(test);
+          showHitsOnBlocks(test);
+        }, 1000);
       }
     });
   });
@@ -107,13 +111,12 @@ const playRound = (machine_board, human_board, player, machine) => {
 let player;
 let machine;
 export function game() {
-  setBackground();
   displayHeader(text_1);
   displayBlocks();
   switchBlocks();
   makeContainer();
 
-    window.addEventListener("mousemove", changeHeaderText);
+  window.addEventListener("mousemove", changeHeaderText);
 
   if (typeof machine === "undefined") {
     machine = makePlayer("Machine");
@@ -133,11 +136,11 @@ export function game() {
   machine_board.createRandomArray();
 
   // Define "Ships" aka drugs
-  const cocaine = new Ship(5, "Cocaine", "human");
-  const meth = new Ship(4, "Meth", "human");
-  const crack = new Ship(3, "Crack", "human");
-  const weed = new Ship(2, "Weed", "human");
-  const shrooms = new Ship(2, "Shrooms", "human");
+  const cocaine = new Ship(5, "cocaine", "human");
+  const meth = new Ship(4, "meth", "human");
+  const crack = new Ship(3, "crack", "human");
+  const weed = new Ship(2, "weed", "human");
+  const shrooms = new Ship(2, "shrooms", "human");
 
   const machine_cocaine = new Ship(5, "cocaine", "machine");
   const machine_meth = new Ship(4, "meth", "machine");
@@ -226,15 +229,15 @@ export function game() {
   });
 
   weedDiv.addEventListener("dragstart", (ev) => {
-   removeHeader();
-   displayHeader(text_7);
+    removeHeader();
+    displayHeader(text_7);
     ev.dataTransfer.clearData();
     ev.dataTransfer.setData("text/plain", ev.target.id);
   });
 
   shroomsDiv.addEventListener("dragstart", (ev) => {
-   removeHeader();
-   displayHeader(text_6);
+    removeHeader();
+    displayHeader(text_6);
     ev.dataTransfer.clearData();
     ev.dataTransfer.setData("text/plain", ev.target.id);
   });
@@ -348,21 +351,18 @@ export function game() {
     if (result) {
       if (player.round === 0) {
         setTimeout(() => {
-            makePopUp();
-            clickPopUp(player);
-            enterPopUp(player);
+          makePopUp();
+          clickPopUp(player);
+          enterPopUp(player);
         }, 1000);
-        
-      }else {
+      } else {
         setTimeout(() => {
           displayName(player);
         }, 1000);
-   
       }
       setTimeout(() => {
         playRound(machine_board, human_board, player, machine);
       }, 1100);
-      
     }
   });
 
@@ -390,7 +390,7 @@ export function game() {
   control_button.textContent = "Check Gameboards";
   control_button.addEventListener("click", () => {
     console.log(human_board);
-    console.log(machine_board);
+    console.log(machine_board.getInfo());
   });
   con.appendChild(control_button);
 

@@ -171,9 +171,17 @@
     border-radius: 5px;
 }
 
-.textContainer {
-    font-size: x-large;
+.text_container {
     display: flex;
     justify-content: center;
-    align-items: center;
+ 
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: x-large;
+    text-align: center;
+}
+
+.text_container div {
+       background-color: white;
+       margin: .5%;
+       padding: .5%;
 }

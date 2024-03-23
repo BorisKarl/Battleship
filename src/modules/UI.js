@@ -21,7 +21,6 @@ const removeHeader = () => {
   body.removeChild(header);
 };
 
-// const button = document.getElementById("button");
 
 const makeContainer = () => {
     const flexContainer = document.createElement("div");
@@ -32,34 +31,16 @@ const makeContainer = () => {
 
 const displayText = (text) => {
   const textContainer = document.createElement("div");
-  textContainer.setAttribute("class", "textContainer");
-
+  textContainer.setAttribute("class", "text_container");
   const msg = document.createElement("div");
-  msg.setAttribute("class", "msg");
-  msg.innerHTML = `
-    <p class="text">${text}</p>
-    <style>
-
-    .msg {
-      display: flex;       
-      justify-content: center;
-      align-items: center;
-    }
-    
-    p {
-        backgroundColor: white;
-        font-family: Arial, Helvetica, sans-serif;
-        text-align: center;
-    }
-</style>
-  `;  
+  msg.setAttribute("class", "text");
+  msg.innerHTML = `${text}`;  
   textContainer.appendChild(msg);
   body.appendChild(textContainer);
 };
 
 const removeText = () => {
-  
-  const msgArray = document.querySelectorAll(".textContainer");
+  const msgArray = document.querySelectorAll(".text_container");
   msgArray.forEach((e) => body.removeChild(e));
 };
 
@@ -73,6 +54,7 @@ const buildBlock = (string, length) => {
   for (let i = 0; i < length; i++) {
     let div = document.createElement("div");
     div.setAttribute("class", "block");
+    div.setAttribute("id", string + "_" + i);
     div.style.backgroundColor = "green";
     div.style.opacity = ".8";
     block_content.appendChild(div);
@@ -128,11 +110,36 @@ const removeBlocks = () => {
   body.removeChild(content);
 };
 
+const setBlocksToGameMode = () => {
+    const blocks = document.querySelectorAll(".v");
+    blocks.forEach((block) => {
+      if(block.classList.contains("v")) {
+         block.classList.remove("v");
+         block.classList.add("h");
+      }
+    })
+    const button = document.getElementById("switch_button");
+    const ui_content = document.getElementById("UI-content");
+    ui_content.removeChild(button);
+    ui_content.style.height = '100px';
+}
+
+ let num = 0;
+const showHitsOnBlocks = (name) => {
+  if (name === "") {
+    return;
+  }else {
+     const el = document.getElementById(name + "_" + num);
+     el.style.backgroundColor = "red";
+     num++;
+  }
+ 
+}
+
 function displayBoard(id) {
   const content = document.getElementById("flexContainer");
   const board = document.createElement("div");
-  const url =
-    "../src/assets/imgs/architecture-building-transport-facade-industry-colorful-722194-pxhere.com.jpg";
+  const url = "../src/assets/imgs/claire-fischer-unsplash.jpg";
   board.style.backgroundImage = `url('${url}')`;
   board.style.backgroundSize = "cover";
   board.setAttribute("id", id);
@@ -182,7 +189,10 @@ const showPosition = (ship) => {
     // console.log(`ShowPosition(). Value e hat den Wert: ${e}.`);
     let div = document.querySelector(`[data-id="${id}"]`);
     array.forEach((e) => {
-      if (e.dataset.id === id) e.style.backgroundColor = "green";
+      if (e.dataset.id === id) {
+        e.style.backgroundColor = "green";
+        e.style.opacity = "0.7";
+      } 
     });
   });
 };
@@ -229,7 +239,7 @@ const displayName = (playerName) => {
   const content = document.createElement("div");
   content.setAttribute("id", "playerNameContainer");
   content.innerHTML = `<div class="player_name" id="playerName">${playerName.name}</div>
-  <div class="machine_name" id="machineName">MACHINE</div>`;
+  <div class="machine_name" id="machineName">Hendrik</div>`;
   body.insertBefore(content, body.firstChild);
 };
 
@@ -243,7 +253,7 @@ const clickPopUp = (player) => {
   popUpButton.addEventListener("click", () => {
     let popUpValue = document.getElementById("popUpInput").value;
     player.changeName(popUpValue);
-    closePopUp();
+      closePopUp();
     displayName(player);
   });
 };
@@ -258,15 +268,6 @@ const enterPopUp = (player) => {
     }
   });
 }; 
-
-
-const setBackground = () => {
-  const url =
-    "../src/assets/imgs/texture-usa-money-business-paper-cash-1354491-pxhere.com.jpg";
-    body.style.backgroundImage = `url('${url}')`;
-    body.style.backgroundPosition = "25% 75%;";
-
-}
 
 const changeHeaderText = () => {
   removeHeader();
@@ -291,6 +292,7 @@ export {
   makeContainer,
   clickPopUp,
   enterPopUp,
-  setBackground,
-  changeHeaderText
+  changeHeaderText,
+  setBlocksToGameMode,
+  showHitsOnBlocks
 };

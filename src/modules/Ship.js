@@ -1,3 +1,4 @@
+import { displayText } from "./UI";
 export default class Ship {
   constructor(size, name, board) {
     this.name = name;
@@ -13,11 +14,11 @@ export default class Ship {
   pos(array, direction) {
     this.direction = direction;
     if (this.direction === "h") {
-      for (let i = 0; i < this.size ; i++) {
+      for (let i = 0; i < this.size; i++) {
         if (array[1] + this.size - 1 > 9) {
           this.position = [];
           console.log(
-            `Invalid position, position ${array} with direction ${direction} and size ${this.size} try again please!`
+            `Invalid position, position ${array} with direction ${direction} and size ${this.size} try again please!`,
           );
           return false;
         }
@@ -28,9 +29,10 @@ export default class Ship {
       for (let i = 0; i < this.size; i++) {
         if (array[0] + this.size - 1 > 9) {
           this.position = [];
-console.log(
-  `Invalid position, position ${array} with direction ${direction} and size ${this.size} try again please!`
-);          return false;
+          console.log(
+            `Invalid position, position ${array} with direction ${direction} and size ${this.size} try again please!`,
+          );
+          return false;
         }
         this.position.push([array[0] + i, array[1]]);
         this.set = true;
@@ -38,20 +40,6 @@ console.log(
     }
   }
 
-  /*
- pos(coord) {
-    this.position.push(coord);
-    this.set = true;
-  }
-  
-*/
-  getPosition() {
-    return this.position;
-  }
-
-  getHealth() {
-    return this.health;
-  }
 
   hit() {
     if (this.health === 0) return;
@@ -60,12 +48,12 @@ console.log(
     if (this.health === 0) {
       this.visible = true;
       this.sunk = true;
-      console.log(`Your ${this.name} was discovered!`);
+      displayText(`Your ${this.name} was sunk!`);
       return;
     }
+    displayText(`Ouch!`);
     console.log("Damn!");
     return;
-    
   }
 
   isSunk() {
@@ -77,9 +65,6 @@ console.log(
     }
   }
 
-  getName() {
-    return this.name;
-  }
 }
 
 export { Ship };

@@ -1,4 +1,5 @@
 import { doc } from "prettier";
+import { displayText } from "./UI";
 
 export default class GameBoard {
   constructor(name) {
@@ -41,16 +42,17 @@ export default class GameBoard {
     return result;
   }
 
-  getAttacks() {
-    return this.attacks;
-  }
-
-  getMissedAttacks() {
-    return this.missedAttacks;
-  }
-
-  getShips() {
-    return this.ships;
+  getInfo(coord) {
+    let result = "";
+    this.ships.forEach((ship) => {
+      ship.position.forEach((pos) => {
+        if (pos[0] === coord[0] && pos[1] === coord[1]) {
+          result = ship.name;
+          // size - health = so viele Blocks müssen rot sein 
+        }
+      });
+    });
+    return result;
   }
 
   sinkShips() {
@@ -98,14 +100,17 @@ export default class GameBoard {
     if (this.attackArray.length <= 0) return;
     let tmp = this.attackArray[0];
     let result = this.receiveAttack(tmp);
+    let hittenShip = "";
     let element = document.querySelector(`[data-id="${tmp}"`);
     if (result) {
+      hittenShip = this.getInfo(tmp);
       element.style.backgroundColor = "red";
     } else {
       element.style.backgroundColor = "pink";
     }
     element.style.opacity = ".6";
     this.attackArray.shift();
+    return hittenShip;
   }
 
   checkGameOver() {
@@ -116,6 +121,10 @@ export default class GameBoard {
     } else {
       return false;
     }
+  }
+
+  changeName(newName) {
+    this.name = newName;
   }
 }
 
