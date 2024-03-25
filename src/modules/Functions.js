@@ -19,11 +19,11 @@ const randDirection = () => {
 const possibleDrugPositions = (drug, direction) => {
   console.log(drug);
   let num = 6;
-  if (drug === "cocaine") {
+  if (drug === "carrier") {
     num = 6;
-  } else if (drug === "meth") {
+  } else if (drug === "battleship") {
     num++;
-  } else if (drug === "crack") {
+  } else if (drug === "cruiser") {
     num += 2;
   } else {
     num += 3;

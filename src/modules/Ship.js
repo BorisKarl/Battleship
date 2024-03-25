@@ -1,4 +1,3 @@
-import { displayText } from "./UI";
 export default class Ship {
   constructor(size, name, board) {
     this.name = name;
@@ -40,7 +39,6 @@ export default class Ship {
     }
   }
 
-
   hit() {
     if (this.health === 0) return;
     this.health -= 1;
@@ -48,10 +46,8 @@ export default class Ship {
     if (this.health === 0) {
       this.visible = true;
       this.sunk = true;
-      displayText(`Your ${this.name} was sunk!`);
       return;
     }
-    displayText(`Ouch!`);
     console.log("Damn!");
     return;
   }
@@ -64,7 +60,6 @@ export default class Ship {
       return false;
     }
   }
-
 }
 
 export { Ship };

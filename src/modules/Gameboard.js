@@ -11,7 +11,6 @@ export default class GameBoard {
     this.attackArray = null;
     this.cellTaken = false;
   }
-  // jedes Feld bekommt ein Objekt ob es besetzt oder getroffen ist.
   buildBoard() {
     let battleGround = [];
     for (let i = 0; i < 10; i++) {
@@ -43,12 +42,13 @@ export default class GameBoard {
   }
 
   getInfo(coord) {
-    let result = "";
+    let result = [];
     this.ships.forEach((ship) => {
       ship.position.forEach((pos) => {
         if (pos[0] === coord[0] && pos[1] === coord[1]) {
-          result = ship.name;
-          // size - health = so viele Blocks müssen rot sein 
+          result.push(ship.name);
+          let redBlocks = ship.size - ship.health;
+          result.push(redBlocks);
         }
       });
     });

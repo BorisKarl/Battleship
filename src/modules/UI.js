@@ -4,6 +4,8 @@ import { doc } from "prettier";
 
 const body = document.querySelector("body");
 
+// HEADER
+
 const displayHeader = (text) => {
   const header_wrapper = document.createElement("div");
   header_wrapper.setAttribute("id", "header_wrapper");
@@ -12,7 +14,7 @@ const displayHeader = (text) => {
   header.textContent = text;
   header.style.backgroundColor = "white";
   header.style.opacity = "0.9";
-  header_wrapper.appendChild(header)
+  header_wrapper.appendChild(header);
   body.insertBefore(header_wrapper, body.firstChild);
 };
 
@@ -21,35 +23,12 @@ const removeHeader = () => {
   body.removeChild(header);
 };
 
-
-const makeContainer = () => {
-    const flexContainer = document.createElement("div");
-    flexContainer.setAttribute("id", "flexContainer");
-    body.appendChild(flexContainer);
-}
-
-
-const displayText = (text) => {
-  const textContainer = document.createElement("div");
-  textContainer.setAttribute("class", "text_container");
-  const msg = document.createElement("div");
-  msg.setAttribute("class", "text");
-  msg.innerHTML = `${text}`;  
-  textContainer.appendChild(msg);
-  body.appendChild(textContainer);
-};
-
-const removeText = () => {
-  const msgArray = document.querySelectorAll(".text_container");
-  msgArray.forEach((e) => body.removeChild(e));
-};
-
+// BLOCKS
 
 const buildBlock = (string, length) => {
   let block_content = document.createElement("div");
   block_content.setAttribute("id", string);
   block_content.setAttribute("class", "v");
-
 
   for (let i = 0; i < length; i++) {
     let div = document.createElement("div");
@@ -59,7 +38,6 @@ const buildBlock = (string, length) => {
     div.style.opacity = ".8";
     block_content.appendChild(div);
   }
-
   return block_content;
 };
 
@@ -72,17 +50,17 @@ const displayBlocks = () => {
   const block_wrapper = document.createElement("div");
   block_wrapper.setAttribute("class", "block_wrapper");
 
-  const cocaine = buildBlock("cocaine", 5);
-  const meth = buildBlock("meth", 4);
-  const crack = buildBlock("crack", 3);
-  const weed = buildBlock("weed", 2);
-  const shrooms = buildBlock("shrooms", 2);
+  const carrier = buildBlock("carrier", 5);
+  const battleship = buildBlock("battleship", 4);
+  const cruiser = buildBlock("cruiser", 3);
+  const sub = buildBlock("sub", 2);
+  const destroyer = buildBlock("destroyer", 2);
 
-  block_wrapper.appendChild(cocaine);
-  block_wrapper.appendChild(meth);
-  block_wrapper.appendChild(crack);
-  block_wrapper.appendChild(weed);
-  block_wrapper.appendChild(shrooms);
+  block_wrapper.appendChild(carrier);
+  block_wrapper.appendChild(battleship);
+  block_wrapper.appendChild(cruiser);
+  block_wrapper.appendChild(sub);
+  block_wrapper.appendChild(destroyer);
   content.appendChild(button);
   content.appendChild(block_wrapper);
   body.appendChild(content);
@@ -104,37 +82,88 @@ const switchBlocks = () => {
   });
 };
 
+// BLOCKS GAME MODE
+
+const setBlocksToGameMode = () => {
+  const blocks = document.querySelectorAll(".v");
+  blocks.forEach((block) => {
+    if (block.classList.contains("v")) {
+      block.classList.remove("v");
+      block.classList.add("h");
+    }
+  });
+  const ui_content = document.getElementById("UI-content");
+  ui_content.style.height = "100px";
+};
+
+const blocksGameMode = () => {
+  const content = document.createElement("div");
+  content.setAttribute("id", "UI-content");
+  const block_wrapper = document.createElement("div");
+  block_wrapper.setAttribute("class", "block_wrapper");
+
+  const carrier = buildBlock("carrier", 5);
+  const battleship = buildBlock("battleship", 4);
+  const cruiser = buildBlock("cruiser", 3);
+  const sub = buildBlock("sub", 2);
+  const destroyer = buildBlock("destroyer", 2);
+
+  block_wrapper.appendChild(carrier);
+  block_wrapper.appendChild(battleship);
+  block_wrapper.appendChild(cruiser);
+  block_wrapper.appendChild(sub);
+  block_wrapper.appendChild(destroyer);
+  content.appendChild(block_wrapper);
+  body.appendChild(content);
+};
+
+// MACHINE BLOCKS
+
+const machineBlocksGameMode = () => {
+  const content = document.createElement("div");
+  content.setAttribute("id", "machine_ui_content");
+  const block_wrapper = document.createElement("div");
+  block_wrapper.setAttribute("class", "block_wrapper");
+
+  const carrier = buildBlock("machine_carrier", 5);
+  const battleship = buildBlock("machine_battleship", 4);
+  const cruiser = buildBlock("machine_cruiser", 3);
+  const sub = buildBlock("machine_sub", 2);
+  const destroyer = buildBlock("machine_destroyer", 2);
+
+  block_wrapper.appendChild(carrier);
+  block_wrapper.appendChild(battleship);
+  block_wrapper.appendChild(cruiser);
+  block_wrapper.appendChild(sub);
+  block_wrapper.appendChild(destroyer);
+  content.appendChild(block_wrapper);
+  body.insertBefore(content, body.firstChild);
+};
+
+const showHitsOnBlocks = (array) => {
+  if (array.length === 0) {
+    return;
+  } else {
+    for (let i = 0; i < array[1]; i++) {
+      let el = document.getElementById(array[0] + "_" + i);
+      el.style.backgroundColor = "red";
+    }
+  }
+};
+
 const removeBlocks = () => {
   const body = document.querySelector("body");
   const content = document.getElementById("UI-content");
   body.removeChild(content);
 };
 
-const setBlocksToGameMode = () => {
-    const blocks = document.querySelectorAll(".v");
-    blocks.forEach((block) => {
-      if(block.classList.contains("v")) {
-         block.classList.remove("v");
-         block.classList.add("h");
-      }
-    })
-    const button = document.getElementById("switch_button");
-    const ui_content = document.getElementById("UI-content");
-    ui_content.removeChild(button);
-    ui_content.style.height = '100px';
-}
+const makeContainer = () => {
+  const flexContainer = document.createElement("div");
+  flexContainer.setAttribute("id", "flexContainer");
+  body.appendChild(flexContainer);
+};
 
- let num = 0;
-const showHitsOnBlocks = (name) => {
-  if (name === "") {
-    return;
-  }else {
-     const el = document.getElementById(name + "_" + num);
-     el.style.backgroundColor = "red";
-     num++;
-  }
- 
-}
+// GAMEBOARD
 
 function displayBoard(id) {
   const content = document.getElementById("flexContainer");
@@ -156,19 +185,18 @@ function displayBoard(id) {
       e.target.style.transform = "scale(1.2)";
       //e.target.style.backgroundColor = "yellow";
       //e.target.style.opacity = "0.3";
-      
     });
     element.addEventListener("mouseout", (e) => {
       e.target.style.transform = "scale(1)";
       //e.target.style.backgroundColor = "transparent";
     });
-    
+
     board.appendChild(element);
   });
   content.appendChild(board);
   //body.appendChild(content);
- 
 }
+
 const showPosition = (ship) => {
   let selector = ship.board;
   let position = ship.position;
@@ -192,11 +220,12 @@ const showPosition = (ship) => {
       if (e.dataset.id === id) {
         e.style.backgroundColor = "green";
         e.style.opacity = "0.7";
-      } 
+      }
     });
   });
 };
 
+// ???
 const clickShip = (ship, player) => {
   let position = ship.position;
   position.forEach((e) => {
@@ -209,7 +238,6 @@ const clickShip = (ship, player) => {
   });
 };
 
-
 const checkPlayer = (player) => {
   const checkPlayerButton = document.createElement("button");
   checkPlayerButton.textContent = "Check Player";
@@ -218,6 +246,8 @@ const checkPlayer = (player) => {
   });
   document.body.appendChild(checkPlayerButton);
 };
+
+// POPUP
 
 const makePopUp = () => {
   const popUp = document.createElement("div");
@@ -231,16 +261,8 @@ const makePopUp = () => {
     </div>
 `;
   body.appendChild(popUp);
- const pop = document.getElementById("popUp");
+  const pop = document.getElementById("popUp");
   pop.style.display = "block";
-};
-
-const displayName = (playerName) => {
-  const content = document.createElement("div");
-  content.setAttribute("id", "playerNameContainer");
-  content.innerHTML = `<div class="player_name" id="playerName">${playerName.name}</div>
-  <div class="machine_name" id="machineName">Hendrik</div>`;
-  body.insertBefore(content, body.firstChild);
 };
 
 const closePopUp = () => {
@@ -253,7 +275,7 @@ const clickPopUp = (player) => {
   popUpButton.addEventListener("click", () => {
     let popUpValue = document.getElementById("popUpInput").value;
     player.changeName(popUpValue);
-      closePopUp();
+    closePopUp();
     displayName(player);
   });
 };
@@ -267,24 +289,27 @@ const enterPopUp = (player) => {
       displayName(player);
     }
   });
-}; 
+};
 
-const changeHeaderText = () => {
-  removeHeader();
-  displayHeader("Stash your drugs away, so your enemy can't find them...");
-}
+// NAME
+
+const displayName = (playerName) => {
+  const content = document.createElement("div");
+  content.setAttribute("id", "playerNameContainer");
+  content.innerHTML = `<div class="player_name" id="playerName">${playerName.name}</div>
+  <div class="machine_name" id="machineName">Hendrik</div>`;
+  body.insertBefore(content, body.firstChild);
+};
 
 export {
   displayBoard,
   showPosition,
   clickShip,
   displayHeader,
-  displayText,
   displayBlocks,
   switchBlocks,
   removeHeader,
   removeBlocks,
-  removeText,
   checkPlayer,
   makePopUp,
   closePopUp,
@@ -292,7 +317,8 @@ export {
   makeContainer,
   clickPopUp,
   enterPopUp,
-  changeHeaderText,
   setBlocksToGameMode,
-  showHitsOnBlocks
+  showHitsOnBlocks,
+  blocksGameMode,
+  machineBlocksGameMode,
 };

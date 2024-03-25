@@ -4,22 +4,21 @@ import GameBoard from "./Gameboard";
 import {
   displayBoard,
   displayHeader,
-  displayText,
   displayBlocks,
   switchBlocks,
   displayName,
   showPosition,
   removeHeader,
   removeBlocks,
-  removeText,
   checkPlayer,
   makePopUp,
   makeContainer,
   clickPopUp,
   enterPopUp,
-  changeHeaderText,
   setBlocksToGameMode,
-  showHitsOnBlocks
+  showHitsOnBlocks,
+  blocksGameMode,
+  machineBlocksGameMode,
 } from "./UI";
 
 import {
@@ -30,18 +29,20 @@ import {
   reset,
 } from "./Functions";
 
-const text_1 = "Become the next Kingpin of Rotterdam!";
-const text_2 = "Stash your drugs away, so your enemy can't find them...";
-const text_3 = "Ohwee thats a lot of coke!";
-const text_4 = "Take that crack and hide it!";
-const text_5 = "Put the crystal away, so nobody can't see it!";
-const text_6 = "Magic mushroom, gonna hide it!";
+const text_1 = "Place your Ships on the left board!";
+const text_2 = "That is the big one, a carrier";
+const text_3 = "That is a battleship";
+const text_4 = "A cruiser";
+const text_5 = "A green submarine";
+const text_6 = "A destroyer";
 const text_7 = "Hide that Hokus Pokus!";
 
 const playRound = (machine_board, human_board, player, machine) => {
   removeHeader();
+  removeBlocks();
+  blocksGameMode();
+  machineBlocksGameMode();
   setBlocksToGameMode();
-  removeText();
   makeContainer();
 
   const machineBoardArray = document.querySelectorAll(".machine");
@@ -54,23 +55,17 @@ const playRound = (machine_board, human_board, player, machine) => {
         element.target.style.backgroundColor = "red";
         element.target.style.opacity = ".6";
         element.target.style.pointerEvents = "none";
-        displayText("Hit!");
         machine_board.checkGameOver();
         human_board.checkGameOver();
-        // showHitsOnBlocks(human_board.getInfo());
-        setTimeout(() => {
-          removeText();
-        }, 1500);
+        let redArray = machine_board.getInfo(array);
+        console.log(redArray);
+        showHitsOnBlocks(redArray);
       } else {
         machine_board.checkGameOver();
         human_board.checkGameOver();
         element.target.style.backgroundColor = "pink";
         element.target.style.opacity = ".6";
-        displayText("Nothing!");
         element.target.style.pointerEvents = "none";
-        setTimeout(() => {
-          removeText();
-        }, 1500);
       }
 
       if (machine_board.checkGameOver() === true) {
@@ -116,8 +111,6 @@ export function game() {
   switchBlocks();
   makeContainer();
 
-  window.addEventListener("mousemove", changeHeaderText);
-
   if (typeof machine === "undefined") {
     machine = makePlayer("Machine");
   }
@@ -136,26 +129,26 @@ export function game() {
   machine_board.createRandomArray();
 
   // Define "Ships" aka drugs
-  const cocaine = new Ship(5, "cocaine", "human");
-  const meth = new Ship(4, "meth", "human");
-  const crack = new Ship(3, "crack", "human");
-  const weed = new Ship(2, "weed", "human");
-  const shrooms = new Ship(2, "shrooms", "human");
+  const carrier = new Ship(5, "carrier", "human");
+  const battleship = new Ship(4, "battleship", "human");
+  const cruiser = new Ship(3, "cruiser", "human");
+  const sub = new Ship(2, "sub", "human");
+  const destroyer = new Ship(2, "destroyer", "human");
 
-  const machine_cocaine = new Ship(5, "cocaine", "machine");
-  const machine_meth = new Ship(4, "meth", "machine");
-  const machine_crack = new Ship(3, "crack", "machine");
-  const machine_weed = new Ship(2, "weed", "machine");
-  const machine_shrooms = new Ship(2, "shrooms", "machine");
+  const machine_carrier = new Ship(5, "machine_carrier", "machine");
+  const machine_battleship = new Ship(4, "machine_battleship", "machine");
+  const machine_cruiser = new Ship(3, "machine_cruiser", "machine");
+  const machine_sub = new Ship(2, "machine_sub", "machine");
+  const machine_destroyer = new Ship(2, "machine_destroyer", "machine");
 
   // Set ships with array
-  const arrayOfShips_human = [cocaine, meth, crack, weed, shrooms];
+  const arrayOfShips_human = [carrier, battleship, cruiser, sub, destroyer];
   const arrayOfShips_machine = [
-    machine_cocaine,
-    machine_meth,
-    machine_crack,
-    machine_weed,
-    machine_shrooms,
+    machine_carrier,
+    machine_battleship,
+    machine_cruiser,
+    machine_sub,
+    machine_destroyer,
   ];
 
   arrayOfShips_human.forEach((e) => {
@@ -184,81 +177,81 @@ export function game() {
     showPosition(ship);
   };
 
-  settingShip(machine_cocaine, shipPositions[0]);
-  settingShip(machine_meth, shipPositions[1]);
-  settingShip(machine_crack, shipPositions[2]);
-  settingShip(machine_weed, shipPositions[3]);
-  settingShip(machine_shrooms, shipPositions[4]);
+  settingShip(machine_carrier, shipPositions[0]);
+  settingShip(machine_battleship, shipPositions[1]);
+  settingShip(machine_cruiser, shipPositions[2]);
+  settingShip(machine_sub, shipPositions[3]);
+  settingShip(machine_destroyer, shipPositions[4]);
 
   displayBoard("human");
   displayBoard("machine");
 
   // It's a drag
   const target = document.getElementById("human");
-  const cocaineDiv = document.getElementById("cocaine");
-  const crackDiv = document.getElementById("crack");
-  const methDIV = document.getElementById("meth");
-  const weedDiv = document.getElementById("weed");
-  const shroomsDiv = document.getElementById("shrooms");
+  const carrierDiv = document.getElementById("carrier");
+  const cruiserDiv = document.getElementById("cruiser");
+  const battleshipDiv = document.getElementById("battleship");
+  const subDiv = document.getElementById("sub");
+  const destroyerDiv = document.getElementById("destroyer");
   const dropzones = document.querySelectorAll(".dropzone");
-  cocaineDiv.setAttribute("draggable", true);
-  crackDiv.setAttribute("draggable", true);
-  methDIV.setAttribute("draggable", true);
-  weedDiv.setAttribute("draggable", true);
-  shroomsDiv.setAttribute("draggable", true);
+  carrierDiv.setAttribute("draggable", true);
+  cruiserDiv.setAttribute("draggable", true);
+  battleshipDiv.setAttribute("draggable", true);
+  subDiv.setAttribute("draggable", true);
+  destroyerDiv.setAttribute("draggable", true);
 
-  cocaineDiv.addEventListener("dragstart", (ev) => {
+  carrierDiv.addEventListener("dragstart", (ev) => {
+    removeHeader();
+    displayHeader(text_2);
+    ev.dataTransfer.clearData();
+    ev.dataTransfer.setData("text/plain", ev.target.id);
+  });
+
+  battleshipDiv.addEventListener("dragstart", (ev) => {
     removeHeader();
     displayHeader(text_3);
     ev.dataTransfer.clearData();
     ev.dataTransfer.setData("text/plain", ev.target.id);
   });
 
-  crackDiv.addEventListener("dragstart", (ev) => {
+  cruiserDiv.addEventListener("dragstart", (ev) => {
     removeHeader();
-    displayHeader(text_4);
+    displayHeader(text_3);
     ev.dataTransfer.clearData();
     ev.dataTransfer.setData("text/plain", ev.target.id);
   });
 
-  methDIV.addEventListener("dragstart", (ev) => {
-    removeHeader();
-    displayHeader(text_5);
-    ev.dataTransfer.clearData();
-    ev.dataTransfer.setData("text/plain", ev.target.id);
-  });
+  subDiv.addEventListener("dragstart", (ev) => {
+      removeHeader();
+      displayHeader(text_5);
+      ev.dataTransfer.clearData();
+      ev.dataTransfer.setData("text/plain", ev.target.id);
+    });
 
-  weedDiv.addEventListener("dragstart", (ev) => {
-    removeHeader();
-    displayHeader(text_7);
-    ev.dataTransfer.clearData();
-    ev.dataTransfer.setData("text/plain", ev.target.id);
-  });
-
-  shroomsDiv.addEventListener("dragstart", (ev) => {
+  destroyerDiv.addEventListener("dragstart", (ev) => {
     removeHeader();
     displayHeader(text_6);
     ev.dataTransfer.clearData();
     ev.dataTransfer.setData("text/plain", ev.target.id);
   });
 
-  cocaineDiv.addEventListener("dragend", (ev) => {
+  carrierDiv.addEventListener("dragend", (ev) => {
     ev.preventDefault();
   });
 
-  crackDiv.addEventListener("dragend", (ev) => {
+  cruiserDiv.addEventListener("dragend", (ev) => {
     ev.preventDefault();
   });
 
-  methDIV.addEventListener("dragend", (ev) => {
+  battleshipDiv.addEventListener("dragend", (ev) => {
     ev.preventDefault();
   });
 
-  weedDiv.addEventListener("dragend", (ev) => {
+  subDiv.addEventListener("dragend", (ev) => {
     ev.preventDefault();
   });
 
-  shroomsDiv.addEventListener("dragend", (ev) => {
+  destroyerDiv.addEventListener("dragend", (ev) => {
     ev.preventDefault();
   });
 
@@ -286,44 +279,40 @@ export function game() {
       return;
     }
 
-    if (shipName === "cocaine") {
-      if (cocaine.pos(a, shipDiv.classList[0])) return;
-      showPosition(cocaine, human_board.name);
+    if (shipName === "carrier") {
+      if (carrier.pos(a, shipDiv.classList[0])) return;
+      showPosition(carrier, human_board.name);
       removeHeader();
-      window.removeEventListener("mousemove", changeHeaderText);
-      displayHeader("Cocaine is hidden!");
-      cocaineDiv.setAttribute("draggable", false);
-    } else if (shipName === "crack") {
-      if (crack.set) return;
-      if (crack.pos(a, shipDiv.classList[0])) return;
-      showPosition(crack, human_board.name);
+      displayHeader("Carrier is set!");
+      carrierDiv.setAttribute("draggable", false);
+    } else if (shipName === "cruiser") {
+      if (cruiser.set) return;
+      if (cruiser.pos(a, shipDiv.classList[0])) return;
+      showPosition(cruiser, human_board.name);
       removeHeader();
-      displayHeader("Nobody gonna find that Crack!");
-      window.removeEventListener("mousemove", changeHeaderText);
-      crackDiv.setAttribute("draggable", false);
-    } else if (shipName === "meth") {
-      if (meth.pos(a, shipDiv.classList[0])) return;
-      showPosition(meth, human_board.name);
-      removeHeader();
-      window.removeEventListener("mousemove", changeHeaderText);
       displayHeader("Good!");
-      methDIV.setAttribute("draggable", false);
-    } else if (shipName === "shrooms") {
-      if (shrooms.set) return;
-      if (shrooms.pos(a, shipDiv.classList[0])) return;
-      showPosition(shrooms, human_board.name);
+
+      cruiserDiv.setAttribute("draggable", false);
+    } else if (shipName === "battleship") {
+      if (battleship.pos(a, shipDiv.classList[0])) return;
+      showPosition(battleship, human_board.name);
       removeHeader();
-      window.removeEventListener("mousemove", changeHeaderText);
+      displayHeader("Thats a good place for a battleship!");
+      battleshipDiv.setAttribute("draggable", false);
+    } else if (shipName === "destroyer") {
+      if (destroyer.set) return;
+      if (destroyer.pos(a, shipDiv.classList[0])) return;
+      showPosition(destroyer, human_board.name);
+      removeHeader();
       displayHeader("Nice!");
-      shroomsDiv.setAttribute("draggable", false);
-    } else if (shipName === "weed") {
-      if (weed.set) return;
-      if (weed.pos(a, shipDiv.classList[0])) return;
-      showPosition(weed, human_board.name);
+      destroyerDiv.setAttribute("draggable", false);
+    } else if (shipName === "sub") {
+      if (sub.set) return;
+      if (sub.pos(a, shipDiv.classList[0])) return;
+      showPosition(sub, human_board.name);
       removeHeader();
-      window.removeEventListener("mousemove", changeHeaderText);
       displayHeader("Perfect!");
-      weedDiv.setAttribute("draggable", false);
+      subDiv.setAttribute("draggable", false);
     } else return;
 
     // Auto set ship
@@ -390,7 +379,7 @@ export function game() {
   control_button.textContent = "Check Gameboards";
   control_button.addEventListener("click", () => {
     console.log(human_board);
-    console.log(machine_board.getInfo());
+    console.log(machine_board);
   });
   con.appendChild(control_button);
 
