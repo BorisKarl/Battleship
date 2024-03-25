@@ -15,10 +15,10 @@ import {
   makeContainer,
   clickPopUp,
   enterPopUp,
-  setBlocksToGameMode,
   showHitsOnBlocks,
-  blocksGameMode,
   machineBlocksGameMode,
+  killAll,
+  checkGameboards
 } from "./UI";
 
 import {
@@ -35,15 +35,15 @@ const text_3 = "That is a battleship";
 const text_4 = "A cruiser";
 const text_5 = "A green submarine";
 const text_6 = "A destroyer";
-const text_7 = "Hide that Hokus Pokus!";
 
 const playRound = (machine_board, human_board, player, machine) => {
+  console.log(player);
   removeHeader();
   removeBlocks();
-  blocksGameMode();
   machineBlocksGameMode();
-  setBlocksToGameMode();
   makeContainer();
+  killAll(human_board, machine_board);
+  checkGameboards();
 
   const machineBoardArray = document.querySelectorAll(".machine");
   machineBoardArray.forEach((e) => {
@@ -87,8 +87,7 @@ const playRound = (machine_board, human_board, player, machine) => {
         machine.addRound();
         player.addLostGame();
         machine.addPoint();
-        alert(`Game Over! ${machine.name} hat gewonnen
-        Es steht ${machine.points} zu ${player.points} für ${machine.name}!`);
+        alert(`Game Over! ${machine.name} hat gewonnen!`);
         setTimeout(() => {
           reset();
           game();
@@ -105,6 +104,7 @@ const playRound = (machine_board, human_board, player, machine) => {
 };
 let player;
 let machine;
+
 export function game() {
   displayHeader(text_1);
   displayBlocks();
@@ -216,7 +216,7 @@ export function game() {
 
   cruiserDiv.addEventListener("dragstart", (ev) => {
     removeHeader();
-    displayHeader(text_3);
+    displayHeader(text_4);
     ev.dataTransfer.clearData();
     ev.dataTransfer.setData("text/plain", ev.target.id);
   });
@@ -290,7 +290,7 @@ export function game() {
       if (cruiser.pos(a, shipDiv.classList[0])) return;
       showPosition(cruiser, human_board.name);
       removeHeader();
-      displayHeader("Good!");
+      displayHeader("Good! That was the cruiser.");
 
       cruiserDiv.setAttribute("draggable", false);
     } else if (shipName === "battleship") {
@@ -304,14 +304,14 @@ export function game() {
       if (destroyer.pos(a, shipDiv.classList[0])) return;
       showPosition(destroyer, human_board.name);
       removeHeader();
-      displayHeader("Nice!");
+      displayHeader("Destroyer set, nice!");
       destroyerDiv.setAttribute("draggable", false);
     } else if (shipName === "sub") {
       if (sub.set) return;
       if (sub.pos(a, shipDiv.classList[0])) return;
       showPosition(sub, human_board.name);
       removeHeader();
-      displayHeader("Perfect!");
+      displayHeader("Perfect, submarine set!");
       subDiv.setAttribute("draggable", false);
     } else return;
 
@@ -346,12 +346,16 @@ export function game() {
         }, 1000);
       } else {
         setTimeout(() => {
-          displayName(player);
+          playRound(machine_board, human_board, player, machine);
+          blocksGameMode(player);
+          machineBlocksGameMode();
+          setBlocksToGameMode();
+          
         }, 1000);
       }
       setTimeout(() => {
         playRound(machine_board, human_board, player, machine);
-      }, 1100);
+      }, 1000);
     }
   });
 
@@ -373,28 +377,4 @@ export function game() {
       }
     });
   });
-
-  const control_button = document.createElement("button");
-  const con = document.querySelector("body");
-  control_button.textContent = "Check Gameboards";
-  control_button.addEventListener("click", () => {
-    console.log(human_board);
-    console.log(machine_board);
-  });
-  con.appendChild(control_button);
-
-  const getAll = document.createElement("button");
-  getAll.textContent = "Attack Human";
-  human_board.createRandomArray();
-  machine_board.createRandomArray();
-
-  getAll.addEventListener("click", () => {
-    let n = 100;
-    while (n > 0) {
-      human_board.randomShot();
-      if (human_board.allShipsGone() === true) return;
-      n--;
-    }
-  });
-  con.appendChild(getAll);
 }

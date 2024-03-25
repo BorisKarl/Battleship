@@ -49,6 +49,7 @@ export default class GameBoard {
           result.push(ship.name);
           let redBlocks = ship.size - ship.health;
           result.push(redBlocks);
+          result.push(ship.sunk);
         }
       });
     });

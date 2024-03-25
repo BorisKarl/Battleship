@@ -56,12 +56,13 @@ const displayBlocks = () => {
   const sub = buildBlock("sub", 2);
   const destroyer = buildBlock("destroyer", 2);
 
+  block_wrapper.appendChild(button);
   block_wrapper.appendChild(carrier);
   block_wrapper.appendChild(battleship);
   block_wrapper.appendChild(cruiser);
   block_wrapper.appendChild(sub);
   block_wrapper.appendChild(destroyer);
-  content.appendChild(button);
+  // content.appendChild(button);
   content.appendChild(block_wrapper);
   body.appendChild(content);
 };
@@ -96,11 +97,16 @@ const setBlocksToGameMode = () => {
   ui_content.style.height = "100px";
 };
 
-const blocksGameMode = () => {
+const blocksGameMode = (player) => {
   const content = document.createElement("div");
   content.setAttribute("id", "UI-content");
   const block_wrapper = document.createElement("div");
   block_wrapper.setAttribute("class", "block_wrapper");
+
+  const name = document.createElement("div");
+  name.setAttribute("id", "player_name_div");
+  name.setAttribute("class", "h");
+  name.textContent = player.name;
 
   const carrier = buildBlock("carrier", 5);
   const battleship = buildBlock("battleship", 4);
@@ -108,6 +114,7 @@ const blocksGameMode = () => {
   const sub = buildBlock("sub", 2);
   const destroyer = buildBlock("destroyer", 2);
 
+  block_wrapper.appendChild(name);
   block_wrapper.appendChild(carrier);
   block_wrapper.appendChild(battleship);
   block_wrapper.appendChild(cruiser);
@@ -123,7 +130,12 @@ const machineBlocksGameMode = () => {
   const content = document.createElement("div");
   content.setAttribute("id", "machine_ui_content");
   const block_wrapper = document.createElement("div");
-  block_wrapper.setAttribute("class", "block_wrapper");
+  block_wrapper.setAttribute("class", "machine_blockwrapper");
+
+  const name = document.createElement("div");
+  name.setAttribute("id", "machine_name_div");
+  name.setAttribute("class", "h");
+  name.textContent = "Machine";
 
   const carrier = buildBlock("machine_carrier", 5);
   const battleship = buildBlock("machine_battleship", 4);
@@ -131,6 +143,7 @@ const machineBlocksGameMode = () => {
   const sub = buildBlock("machine_sub", 2);
   const destroyer = buildBlock("machine_destroyer", 2);
 
+  block_wrapper.appendChild(name);
   block_wrapper.appendChild(carrier);
   block_wrapper.appendChild(battleship);
   block_wrapper.appendChild(cruiser);
@@ -143,6 +156,15 @@ const machineBlocksGameMode = () => {
 const showHitsOnBlocks = (array) => {
   if (array.length === 0) {
     return;
+  } else if (array[2] === true) {
+    console.log(array);
+    let el = document.getElementById(array[0]);
+    el.innerHTML = `<style>
+#${array[0]} {
+    background-color: white !important;
+}
+</style>`;
+    console.log(el);
   } else {
     for (let i = 0; i < array[1]; i++) {
       let el = document.getElementById(array[0] + "_" + i);
@@ -238,13 +260,41 @@ const clickShip = (ship, player) => {
   });
 };
 
+// Check Buttons
+
 const checkPlayer = (player) => {
   const checkPlayerButton = document.createElement("button");
   checkPlayerButton.textContent = "Check Player";
   checkPlayerButton.addEventListener("click", () => {
     console.log(player);
   });
-  document.body.appendChild(checkPlayerButton);
+  body.insertBefore(checkPlayerButton, body.firstChild);
+};
+
+const killAll = (human_board, machine_board) => {
+  const button = document.createElement("button");
+  button.textContent = "Kill switch";
+  human_board.createRandomArray();
+  machine_board.createRandomArray();
+
+  button.addEventListener("click", () => {
+    let n = 100;
+    while (n > 0) {
+      human_board.randomShot();
+      if (human_board.allShipsGone() === true) return;
+      n--;
+    }
+  });
+  body.insertBefore(button, body.firstChild);
+};
+const checkGameboards = () => {
+  const control_button = document.createElement("button");
+  control_button.textContent = "Check Gameboards";
+  control_button.addEventListener("click", () => {
+    console.log(human_board);
+    console.log(machine_board);
+  });
+  body.insertBefore(control_button, body.firstChild);
 };
 
 // POPUP
@@ -276,7 +326,8 @@ const clickPopUp = (player) => {
     let popUpValue = document.getElementById("popUpInput").value;
     player.changeName(popUpValue);
     closePopUp();
-    displayName(player);
+    blocksGameMode(player);
+    setBlocksToGameMode();
   });
 };
 
@@ -286,7 +337,8 @@ const enterPopUp = (player) => {
     if (e.key === "Enter") {
       player.changeName(input.value);
       closePopUp();
-      displayName(player);
+      blocksGameMode(player);
+      setBlocksToGameMode();
     }
   });
 };
@@ -321,4 +373,6 @@ export {
   showHitsOnBlocks,
   blocksGameMode,
   machineBlocksGameMode,
+  killAll,
+  checkGameboards,
 };
