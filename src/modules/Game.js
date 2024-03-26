@@ -6,7 +6,6 @@ import {
   displayHeader,
   displayBlocks,
   switchBlocks,
-  displayName,
   showPosition,
   removeHeader,
   removeBlocks,
@@ -20,7 +19,8 @@ import {
   blocksGameMode,
   setBlocksToGameMode,
   killAll,
-  checkGameboards
+  checkGameboards,
+  displayRound
 } from "./UI";
 
 import {
@@ -355,6 +355,7 @@ export function game() {
           blocksGameMode(player);
           machineBlocksGameMode();
           setBlocksToGameMode();
+          displayRound(player, machine);
           // playRound(machine_board, human_board, player, machine);
           
         }, 1000);

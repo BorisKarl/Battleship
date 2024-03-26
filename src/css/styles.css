@@ -178,3 +178,8 @@
 .block_hit div{
     background-color: white !important;
 }
+
+.round_header {
+    font-family: Arial, Helvetica, sans-serif;
+    text-align: center;
+}

@@ -325,6 +325,7 @@ const clickPopUp = (player) => {
     blocksGameMode(player);
     machineBlocksGameMode();
     setBlocksToGameMode();
+     displayRound(player, machine);
   });
 };
 
@@ -337,19 +338,23 @@ const enterPopUp = (player) => {
       machineBlocksGameMode();
       blocksGameMode(player);
       setBlocksToGameMode();
+       displayRound(player, machine);
     }
   });
 };
 
-// NAME
+// ROUND
 
-const displayName = (playerName) => {
-  const content = document.createElement("div");
-  content.setAttribute("id", "playerNameContainer");
-  content.innerHTML = `<div class="player_name" id="playerName">${playerName.name}</div>
-  <div class="machine_name" id="machineName">Hendrik</div>`;
-  body.insertBefore(content, body.firstChild);
-};
+const displayRound = (player, machine) => {
+  const roundHeader = document.createElement("h1");
+  roundHeader.setAttribute("class", "round_header");
+  roundHeader.style.color = "green";
+  if (typeof(machine) !==  'undefined') roundHeader.textContent = `Round : ${player.round} | ${player.name} : ${player.points} | ${machine.name} : ${machine.points}`;
+  roundHeader.textContent = `Round : ${player.round} | ${player.name} : ${player.points}`;
+  
+  body.insertBefore(roundHeader, body.firstChild);
+} 
+
 
 export {
   displayBoard,
@@ -363,7 +368,6 @@ export {
   checkPlayer,
   makePopUp,
   closePopUp,
-  displayName,
   makeContainer,
   clickPopUp,
   enterPopUp,
@@ -373,4 +377,5 @@ export {
   machineBlocksGameMode,
   killAll,
   checkGameboards,
+  displayRound
 };
