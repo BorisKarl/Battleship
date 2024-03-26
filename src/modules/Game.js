@@ -43,8 +43,8 @@ const playRound = (machine_board, human_board, player, machine) => {
   removeHeader();
   removeBlocks();
   makeContainer();
-  killAll(human_board, machine_board);
-  checkGameboards(human_board, machine_board);
+  // killAll(human_board, machine_board);
+  // checkGameboards(human_board, machine_board);
 
   const machineBoardArray = document.querySelectorAll(".machine");
   machineBoardArray.forEach((e) => {
@@ -121,7 +121,6 @@ export function game() {
 
   const header = document.getElementById("header");
   header.style.color = "green";
-  checkPlayer(player);
 
   // Make new boards
   const human_board = new GameBoard("human");
