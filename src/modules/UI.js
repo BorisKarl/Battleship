@@ -186,7 +186,8 @@ const makeContainer = () => {
 function displayBoard(id) {
   const content = document.getElementById("flexContainer");
   const board = document.createElement("div");
-  const url = "../src/assets/imgs/claire-fischer-unsplash.jpg";
+  // const url = "../src/assets/imgs/claire-fischer-unsplash.jpg";
+  const url = "claire-fischer-unsplash.jpg";
   board.style.backgroundImage = `url('${url}')`;
   board.style.backgroundSize = "cover";
   board.setAttribute("id", id);
