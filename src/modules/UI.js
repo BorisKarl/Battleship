@@ -156,19 +156,15 @@ const machineBlocksGameMode = () => {
 const showHitsOnBlocks = (array) => {
   if (array.length === 0) {
     return;
-  } else if (array[2] === true) {
-    console.log(array);
-    let el = document.getElementById(array[0]);
-    el.innerHTML = `<style>
-#${array[0]} {
-    background-color: white !important;
-}
-</style>`;
-    console.log(el);
-  } else {
-    for (let i = 0; i < array[1]; i++) {
+  } 
+  for (let i = 0; i < array[1]; i++) {
       let el = document.getElementById(array[0] + "_" + i);
       el.style.backgroundColor = "red";
+      if (array[2] === true) {
+      let el = document.getElementById(array[0]);
+      setTimeout(() => {
+        el.classList.add("block_hit");
+      }, 1000);
     }
   }
 };
@@ -287,7 +283,7 @@ const killAll = (human_board, machine_board) => {
   });
   body.insertBefore(button, body.firstChild);
 };
-const checkGameboards = () => {
+const checkGameboards = (human_board, machine_board) => {
   const control_button = document.createElement("button");
   control_button.textContent = "Check Gameboards";
   control_button.addEventListener("click", () => {
@@ -327,6 +323,7 @@ const clickPopUp = (player) => {
     player.changeName(popUpValue);
     closePopUp();
     blocksGameMode(player);
+    machineBlocksGameMode();
     setBlocksToGameMode();
   });
 };
@@ -337,6 +334,7 @@ const enterPopUp = (player) => {
     if (e.key === "Enter") {
       player.changeName(input.value);
       closePopUp();
+      machineBlocksGameMode();
       blocksGameMode(player);
       setBlocksToGameMode();
     }

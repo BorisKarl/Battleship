@@ -114,27 +114,16 @@
 }
 
 .modal-content {
-
+    border-radius: 5px;
     text-align: center;
     background-color: #fefefe;
     margin: 15% auto;
     padding: 20px;
     border: 1px solid #888;
-    width: 80%;
 }
 
-.close {
-  color: #aaa;
-  float: right;
-  font-size: 28px;
-  font-weight: bold;
-}
-
-.close:hover,
-.close:focus {
-  color: black;
-  text-decoration: none;
-  cursor: pointer;
+#submitPopup {
+    padding: 3px;
 }
 
 #playerNameContainer {
@@ -155,14 +144,7 @@
     color: green;
 }
 
-#machineName {
-    position: fixed;
-    margin-left: 67%;
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: x-large;
-    background-color: white;
-    color: green;
-}
+
 
 .text_container {
     display: flex;
@@ -191,4 +173,8 @@
     justify-content: space-around;
     height: 100px;
     margin: 2%;
+}
+
+.block_hit div{
+    background-color: white !important;
 }

@@ -17,6 +17,8 @@ import {
   enterPopUp,
   showHitsOnBlocks,
   machineBlocksGameMode,
+  blocksGameMode,
+  setBlocksToGameMode,
   killAll,
   checkGameboards
 } from "./UI";
@@ -40,10 +42,9 @@ const playRound = (machine_board, human_board, player, machine) => {
   console.log(player);
   removeHeader();
   removeBlocks();
-  machineBlocksGameMode();
   makeContainer();
   killAll(human_board, machine_board);
-  checkGameboards();
+  checkGameboards(human_board, machine_board);
 
   const machineBoardArray = document.querySelectorAll(".machine");
   machineBoardArray.forEach((e) => {
@@ -275,45 +276,50 @@ export function game() {
     let a = [];
     a.push(id1, id2);
     if (human_board.invalidPosition(a)) {
-      msg.textContent = "Invalid position, try again!";
+      displayHeader("Invalid position, try again!");
       return;
-    }
+    } else if (isNaN(id1) || isNaN(id2)) {
+        displayHeader('Invalid position, try again');
+        setTimeout(() => {
+          removeHeader();
+        }, 1500)
+        return;
+    }  
+      if (shipName === "carrier") {
+        if (carrier.pos(a, shipDiv.classList[0])) return;
+        showPosition(carrier, human_board.name);
+        removeHeader();
+        displayHeader("Carrier is set!");
+        carrierDiv.setAttribute("draggable", false);
+      } else if (shipName === "cruiser") {
+        if (cruiser.set) return;
+        if (cruiser.pos(a, shipDiv.classList[0])) return;
+        showPosition(cruiser, human_board.name);
+        removeHeader();
+        displayHeader("Good! That was the cruiser.");
 
-    if (shipName === "carrier") {
-      if (carrier.pos(a, shipDiv.classList[0])) return;
-      showPosition(carrier, human_board.name);
-      removeHeader();
-      displayHeader("Carrier is set!");
-      carrierDiv.setAttribute("draggable", false);
-    } else if (shipName === "cruiser") {
-      if (cruiser.set) return;
-      if (cruiser.pos(a, shipDiv.classList[0])) return;
-      showPosition(cruiser, human_board.name);
-      removeHeader();
-      displayHeader("Good! That was the cruiser.");
-
-      cruiserDiv.setAttribute("draggable", false);
-    } else if (shipName === "battleship") {
-      if (battleship.pos(a, shipDiv.classList[0])) return;
-      showPosition(battleship, human_board.name);
-      removeHeader();
-      displayHeader("Thats a good place for a battleship!");
-      battleshipDiv.setAttribute("draggable", false);
-    } else if (shipName === "destroyer") {
-      if (destroyer.set) return;
-      if (destroyer.pos(a, shipDiv.classList[0])) return;
-      showPosition(destroyer, human_board.name);
-      removeHeader();
-      displayHeader("Destroyer set, nice!");
-      destroyerDiv.setAttribute("draggable", false);
-    } else if (shipName === "sub") {
-      if (sub.set) return;
-      if (sub.pos(a, shipDiv.classList[0])) return;
-      showPosition(sub, human_board.name);
-      removeHeader();
-      displayHeader("Perfect, submarine set!");
-      subDiv.setAttribute("draggable", false);
-    } else return;
+        cruiserDiv.setAttribute("draggable", false);
+      } else if (shipName === "battleship") {
+        if (battleship.pos(a, shipDiv.classList[0])) return;
+        showPosition(battleship, human_board.name);
+        removeHeader();
+        displayHeader("Thats a good place for a battleship!");
+        battleshipDiv.setAttribute("draggable", false);
+      } else if (shipName === "destroyer") {
+        if (destroyer.set) return;
+        if (destroyer.pos(a, shipDiv.classList[0])) return;
+        showPosition(destroyer, human_board.name);
+        removeHeader();
+        displayHeader("Destroyer set, nice!");
+        destroyerDiv.setAttribute("draggable", false);
+      } else if (shipName === "sub") {
+        if (sub.set) return;
+        if (sub.pos(a, shipDiv.classList[0])) return;
+        showPosition(sub, human_board.name);
+        removeHeader();
+        displayHeader("Perfect, submarine set!");
+        subDiv.setAttribute("draggable", false);
+      } else return;
 
     // Auto set ship
     /*
@@ -346,10 +352,10 @@ export function game() {
         }, 1000);
       } else {
         setTimeout(() => {
-          playRound(machine_board, human_board, player, machine);
           blocksGameMode(player);
           machineBlocksGameMode();
           setBlocksToGameMode();
+          // playRound(machine_board, human_board, player, machine);
           
         }, 1000);
       }
