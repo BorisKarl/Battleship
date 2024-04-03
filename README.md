@@ -1,4 +1,6 @@
-#BATTLESHIP
+# BATTLESHIP
+
+![webpack](https://github.com/webpack/media/blob/master/logo/logo-on-white-bg.png)
 
 A javasript game for the odin project.
 
