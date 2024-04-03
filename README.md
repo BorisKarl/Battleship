@@ -9,4 +9,4 @@ Featuring following techniques:
 - NPM
 
 
-Check it out here -> [BATTLESHIP]([url](https://boriskarl.github.io/Battleship/))
+Check it out here -> [BATTLESHIP]([[url](https://boriskarl.github.io/Battleship/)])
