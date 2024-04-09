@@ -7,6 +7,10 @@
     display: block;
 }
 
+#mobile_game_button {
+    display: none;
+}
+
 #header_wrapper {
     display: flex;
     justify-content: center;
@@ -205,5 +209,9 @@
     #switch_button {
        display: none;
     }
+
+    #mobile_game_button {
+    display: none;
+}
 
 }

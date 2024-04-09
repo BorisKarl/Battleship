@@ -18,8 +18,8 @@ import {
   machineBlocksGameMode,
   blocksGameMode,
   setBlocksToGameMode,
-  killAll,
-  checkGameboards,
+  makeMobileButton,
+  removeMobileButton,
   displayRound
 } from "./UI";
 
@@ -38,10 +38,12 @@ const text_4 = "A cruiser";
 const text_5 = "A green submarine";
 const text_6 = "A destroyer";
 
+
 const playRound = (machine_board, human_board, player, machine) => {
   console.log(player);
   removeHeader();
   removeBlocks();
+  removeMobileButton();
   makeContainer();
   // killAll(human_board, machine_board);
   // checkGameboards(human_board, machine_board);
@@ -111,6 +113,7 @@ export function game() {
   displayBlocks();
   switchBlocks();
   makeContainer();
+  makeMobileButton();
 
   if (typeof machine === "undefined") {
     machine = makePlayer("Machine");
@@ -128,7 +131,7 @@ export function game() {
   const machine_board = new GameBoard("machine");
   machine_board.createRandomArray();
 
-  // Define "Ships" aka drugs
+  // Define "hips
   const carrier = new Ship(5, "carrier", "human");
   const battleship = new Ship(4, "battleship", "human");
   const cruiser = new Ship(3, "cruiser", "human");
@@ -159,8 +162,9 @@ export function game() {
     machine_board.placeShips(e);
   });
 
-  // Set ships on random position
+  // Set ships on random position machine
   const shipPositions = setShipsOnMachineBoard(arrayOfShips_machine);
+  const mobileShipArray = setShipsOnMachineBoard(arrayOfShips_human);
 
   const settingShip = (ship, array) => {
     if (!array || !Array.isArray(array)) {
@@ -182,6 +186,39 @@ export function game() {
   settingShip(machine_cruiser, shipPositions[2]);
   settingShip(machine_sub, shipPositions[3]);
   settingShip(machine_destroyer, shipPositions[4]);
+
+  // Auto set ship
+  const mobileGameButton = document.getElementById("mobile_game_button");
+  mobileGameButton.addEventListener("click", () => {
+ 
+    settingShip(carrier, mobileShipArray[0]);
+    settingShip(battleship, mobileShipArray[1]);
+    settingShip(cruiser, mobileShipArray[2]);
+    settingShip(sub, mobileShipArray[3]);
+    settingShip(destroyer, mobileShipArray[4]);
+    console.log(human_board.allShipsSet());
+    let result = human_board.allShipsSet();
+    if (result) {
+      if (player.round === 0) {
+        setTimeout(() => {
+          makePopUp();
+          clickPopUp(player);
+          enterPopUp(player);
+        }, 1000);
+      } else {
+        setTimeout(() => {
+          blocksGameMode(player);
+          machineBlocksGameMode();
+          setBlocksToGameMode();
+          displayRound(player, machine);
+          // playRound(machine_board, human_board, player, machine);
+        }, 1000);
+      }
+      setTimeout(() => {
+        playRound(machine_board, human_board, player, machine);
+      }, 1000);
+    }
+  });
 
   displayBoard("human");
   displayBoard("machine");
@@ -222,11 +259,11 @@ export function game() {
   });
 
   subDiv.addEventListener("dragstart", (ev) => {
-      removeHeader();
-      displayHeader(text_5);
-      ev.dataTransfer.clearData();
-      ev.dataTransfer.setData("text/plain", ev.target.id);
-    });
+    removeHeader();
+    displayHeader(text_5);
+    ev.dataTransfer.clearData();
+    ev.dataTransfer.setData("text/plain", ev.target.id);
+  });
 
   destroyerDiv.addEventListener("dragstart", (ev) => {
     removeHeader();
@@ -278,69 +315,48 @@ export function game() {
       displayHeader("Invalid position, try again!");
       return;
     } else if (isNaN(id1) || isNaN(id2)) {
-        displayHeader('Invalid position, try again');
-        setTimeout(() => {
-          removeHeader();
-        }, 1500)
-        return;
-    }  
-      if (shipName === "carrier") {
-        if (carrier.pos(a, shipDiv.classList[0])) return;
-        showPosition(carrier, human_board.name);
+      displayHeader("Invalid position, try again");
+      setTimeout(() => {
         removeHeader();
-        displayHeader("Carrier is set!");
-        carrierDiv.setAttribute("draggable", false);
-      } else if (shipName === "cruiser") {
-        if (cruiser.set) return;
-        if (cruiser.pos(a, shipDiv.classList[0])) return;
-        showPosition(cruiser, human_board.name);
-        removeHeader();
-        displayHeader("Good! That was the cruiser.");
+      }, 1500);
+      return;
+    }
+    if (shipName === "carrier") {
+      if (carrier.pos(a, shipDiv.classList[0])) return;
+      showPosition(carrier, human_board.name);
+      removeHeader();
+      displayHeader("Carrier is set!");
+      carrierDiv.setAttribute("draggable", false);
+    } else if (shipName === "cruiser") {
+      if (cruiser.set) return;
+      if (cruiser.pos(a, shipDiv.classList[0])) return;
+      showPosition(cruiser, human_board.name);
+      removeHeader();
+      displayHeader("Good! That was the cruiser.");
 
-        cruiserDiv.setAttribute("draggable", false);
-      } else if (shipName === "battleship") {
-        if (battleship.pos(a, shipDiv.classList[0])) return;
-        showPosition(battleship, human_board.name);
-        removeHeader();
-        displayHeader("Thats a good place for a battleship!");
-        battleshipDiv.setAttribute("draggable", false);
-      } else if (shipName === "destroyer") {
-        if (destroyer.set) return;
-        if (destroyer.pos(a, shipDiv.classList[0])) return;
-        showPosition(destroyer, human_board.name);
-        removeHeader();
-        displayHeader("Destroyer set, nice!");
-        destroyerDiv.setAttribute("draggable", false);
-      } else if (shipName === "sub") {
-        if (sub.set) return;
-        if (sub.pos(a, shipDiv.classList[0])) return;
-        showPosition(sub, human_board.name);
-        removeHeader();
-        displayHeader("Perfect, submarine set!");
-        subDiv.setAttribute("draggable", false);
-      } else return;
+      cruiserDiv.setAttribute("draggable", false);
+    } else if (shipName === "battleship") {
+      if (battleship.pos(a, shipDiv.classList[0])) return;
+      showPosition(battleship, human_board.name);
+      removeHeader();
+      displayHeader("Thats a good place for a battleship!");
+      battleshipDiv.setAttribute("draggable", false);
+    } else if (shipName === "destroyer") {
+      if (destroyer.set) return;
+      if (destroyer.pos(a, shipDiv.classList[0])) return;
+      showPosition(destroyer, human_board.name);
+      removeHeader();
+      displayHeader("Destroyer set, nice!");
+      destroyerDiv.setAttribute("draggable", false);
+    } else if (shipName === "sub") {
+      if (sub.set) return;
+      if (sub.pos(a, shipDiv.classList[0])) return;
+      showPosition(sub, human_board.name);
+      removeHeader();
+      displayHeader("Perfect, submarine set!");
+      subDiv.setAttribute("draggable", false);
+    } else return;
 
-    // Auto set ship
-    /*
-    const setShip = (ship, coord) => {
-      ship.pos(coord, "v");
-      showPosition(ship);
-    };
-    setShip(cocaine, [0, 0]);
-    setShip(crack, [0, 1]);
-    setShip(meth, [0, 2]);
-    setShip(weed, [0, 3]);
-    setShip(shrooms, [0, 4]);
-
-    const popUpButton = document.getElementById("submitPopup");
-        popUpButton.addEventListener("click", () => {
-          let popUpValue = document.getElementById("popUpInput").value;
-          player.changeName(popUpValue);
-          closePopUp();
-          displayName(player);
-        });
-
-    */
     let result = human_board.allShipsSet();
     if (result) {
       if (player.round === 0) {
@@ -356,7 +372,6 @@ export function game() {
           setBlocksToGameMode();
           displayRound(player, machine);
           // playRound(machine_board, human_board, player, machine);
-          
         }, 1000);
       }
       setTimeout(() => {

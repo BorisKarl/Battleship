@@ -7,6 +7,11 @@
     display: block;
 }
 
+
+#mobile_game_button {
+    display: none;
+}
+
 #header_wrapper {
     display: flex;
     justify-content: center;
@@ -187,6 +192,15 @@
 
 @media only screen and (max-width: 600px) {
 
+    .block_wrapper {
+        display: none;
+    }
+
+    #flexContainer {
+    flex-direction: row-reverse;
+    gap: 50px;
+}
+
    #human, #machine{
     display: grid;
     grid-template-columns: repeat(10, 30px);
@@ -206,5 +220,19 @@
     #switch_button {
        display: none;
     }
+    .machine_blockwrapper {
+        display: none;
+    }
+
+    .blockwrapper {
+        display: none;
+    }
+
+    #mobile_game_button {
+        display: block;
+        margin: 0 auto;
+        margin-top: 5%;
+        
+}
 
 }

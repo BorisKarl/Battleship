@@ -357,6 +357,19 @@ const displayRound = (player, machine) => {
 } 
 
 
+const makeMobileButton = () => {
+  const mobileGameButton = document.createElement("button");
+  mobileGameButton.setAttribute("id", "mobile_game_button");
+  mobileGameButton.textContent = "PLAY!";
+  body.insertBefore(mobileGameButton, body.firstChild);
+}
+
+const removeMobileButton = () => {
+  const button = document.getElementById("mobile_game_button");
+  body.removeChild(button);
+
+}
+
 export {
   displayBoard,
   showPosition,
@@ -378,5 +391,7 @@ export {
   machineBlocksGameMode,
   killAll,
   checkGameboards,
-  displayRound
+  displayRound,
+  makeMobileButton,
+  removeMobileButton
 };
