@@ -312,6 +312,22 @@ const makePopUp = () => {
   pop.style.display = "block";
 };
 
+const makeMobilePopUp = () => {
+  const popUp = document.createElement("div");
+  popUp.innerHTML = `
+    <div id="popUp" class="modal">
+      <div class="modal-content">
+        <p>Input your name, then play on the lower field!</p>
+        <input type="text" id="popUpInput" autofocus>
+        <button id="submitPopup">Submit</button>
+      </div>
+    </div>
+`;
+  body.appendChild(popUp);
+  const pop = document.getElementById("popUp");
+  pop.style.display = "block";
+};
+
 const closePopUp = () => {
   const popUp = document.getElementById("popUp");
   popUp.style.display = "none";
@@ -393,5 +409,6 @@ export {
   checkGameboards,
   displayRound,
   makeMobileButton,
-  removeMobileButton
+  removeMobileButton,
+  makeMobilePopUp
 };

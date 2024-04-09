@@ -20,6 +20,7 @@ import {
   setBlocksToGameMode,
   makeMobileButton,
   removeMobileButton,
+  makeMobilePopUp,
   displayRound
 } from "./UI";
 
@@ -201,7 +202,7 @@ export function game() {
     if (result) {
       if (player.round === 0) {
         setTimeout(() => {
-          makePopUp();
+          makeMobilePopUp();
           clickPopUp(player);
           enterPopUp(player);
         }, 1000);
