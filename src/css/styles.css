@@ -183,3 +183,27 @@
     font-family: Arial, Helvetica, sans-serif;
     text-align: center;
 }
+
+@media only screen and (max-width: 600px) {
+
+   #human, #machine{
+    display: grid;
+    grid-template-columns: repeat(10, 30px);
+    grid-template-rows: repeat(10, 30px);
+    gap: 2px;
+}
+    .block {
+    border: 1px solid black;
+    width: 30px;
+    height: 30px;
+}
+
+    #header_wrapper {
+        margin: 5%;
+    }
+
+    #switch_button {
+       display: none;
+    }
+
+}
